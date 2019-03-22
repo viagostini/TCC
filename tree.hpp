@@ -28,8 +28,8 @@ class Tree {
     vector <Node> nodes;
 
     Tree (int size, vector<Edge> edges);
-    void dfs ();
-    void dfs (int u);
+    vector<int> dfs ();
+    void dfs (int u, vector<int> &ret);
 };
 
 #endif

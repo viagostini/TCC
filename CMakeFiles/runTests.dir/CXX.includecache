@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/viniagostini/TCC/TreeTest.cpp
+tree.cpp
+/home/viniagostini/TCC/tree.cpp
+gtest/gtest.h
+-
+
+/home/viniagostini/TCC/tree.cpp
+tree.hpp
+/home/viniagostini/TCC/tree.hpp
+
+/home/viniagostini/TCC/tree.hpp
+bits/stdc++.h
+-
+

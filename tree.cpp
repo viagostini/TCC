@@ -1,4 +1,4 @@
-#include "tree.h"
+#include "tree.hpp"
 
 Edge::Edge (int from, int to): to(to), from(from) {}
 
@@ -18,15 +18,18 @@ Tree::Tree (int size, vector<Edge> edges) {
         nodes[e.from].add_child(nodes[e.to]);
 }
 
-void Tree::dfs () {
-    dfs(0);
+vector<int> Tree::dfs () {
+    vector<int> ret;
+    dfs(0, ret);
+    return ret;
 }
 
-void Tree::dfs (int u) {
+void Tree::dfs (int u, vector<int> &ret) {
     Node root = nodes[u];
-    cout << root.label << " ";
+    ret.push_back(root.label);
+    //cout << root.label << " ";
     for (Node node : root.children)
-        dfs(node.label);
+        dfs(node.label, ret);
 }
 
 
