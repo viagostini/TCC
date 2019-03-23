@@ -1,3 +1,0 @@
-/home/viniagostini/TCC/CMakeFiles/rebuild_cache.dir
-/home/viniagostini/TCC/CMakeFiles/edit_cache.dir
-/home/viniagostini/TCC/CMakeFiles/runTests.dir
