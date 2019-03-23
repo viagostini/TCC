@@ -1,6 +1,7 @@
 *.vscode
 runTests
 CMakeFiles
+Makefile
 
 # Prerequisites
 *.d
