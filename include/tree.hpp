@@ -8,12 +8,18 @@
 using std::vector;
 
 class Tree {
-    public:
+    private:
     int size_;
+    vector<int> depth_;
+    vector<int> parent_;
     vector <Node> nodes_;
 
+    public:
+    Tree ();
     Tree (int size, vector<Edge> edges);
     int size ();
+    int depth (int u);
+    int parent (int u);
     vector<Node> nodes ();
     vector<int> dfs ();
     void dfs (int u, vector<int> &ret);
