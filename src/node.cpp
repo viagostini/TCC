@@ -6,6 +6,22 @@ int Node::label () {
     return label_;
 }
 
+// int Node::depth () {
+//     return depth_;
+// }
+
+// void Node::setDepth (int depth) {
+//     depth_ = depth;
+// }
+
+// int Node::parent () {
+//     return parent_;
+// }
+
+// void Node::setParent (int parent) {
+//     parent_ = parent;
+// }
+
 vector<Node> Node::children () {
     return children_;
 }

@@ -6,12 +6,19 @@
 using std::vector;
 
 class Node {
-    public:
+    private:
     int label_;
+    // int depth_;
+    // int parent_;
     vector<Node> children_;
 
+    public:
     Node (int label);
     int label ();
+    // int depth ();
+    // int parent ();
+    // void setDepth (int depth);
+    // void setParent (int parent);
     vector<Node> children ();
     void add_child (Node child);
 };
