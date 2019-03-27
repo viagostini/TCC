@@ -1,9 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "../src/edge.cpp"
-#include "../src/node.cpp"
-#include "../src/tree.cpp"
-#include "../src/TableAlgorithm.cpp"
+#include "../include/node.hpp"
+#include "../include/tree.hpp"
+#include "../include/TableAlgorithm.hpp"
 
 int default_graph_size = 7;
 vector<Edge> default_graph_edges = {
@@ -21,11 +20,11 @@ vector<Edge> default_graph_edges = {
  *                                                         *    
  * *********************************************************/
 
-TEST (EdgeTest, SimpleTest) {
-    Edge edge(4, 5);
-    ASSERT_EQ(4, edge.from());
-    ASSERT_EQ(5, edge.to());
-}
+// TEST (EdgeTest, SimpleTest) {
+//     Edge edge(4, 5);
+//     ASSERT_EQ(4, edge.from());
+//     ASSERT_EQ(5, edge.to());
+// }
 
 /* *********************************************************
  *                                                         *      
