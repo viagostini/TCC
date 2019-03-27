@@ -1,6 +1,9 @@
 #ifndef EDGE_H
 #define EDGE_H
 
+#include <cstdio>
+#include <cstdlib>
+
 class Edge {
     public:
     int from_;

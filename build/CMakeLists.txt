@@ -14,6 +14,9 @@ add_executable(
     ../src/tree.cpp
     ../src/TableAlgorithm.cpp
     ../tests/Tests.cpp
-    ../tests/EdgeTest.cpp
+    ../tests/EdgeTests.cpp
+    ../tests/NodeTests.cpp
+    ../tests/TreeTests.cpp
+    ../tests/TableAlgorithmTests.cpp
 )
 target_link_libraries(runTests ${GTEST_LIBRARIES} pthread)
