@@ -1,7 +1,25 @@
-#include <gtest/gtest.h>
-#include "../include/tree.hpp"
-#include "TreeTests.hpp"
+#ifndef TREE_TESTS_H
+#define TREE_TESTS_H
 
+#include <gtest/gtest.h>
+#include "../../code/include/tree.hpp"
+
+struct EmptyTree {
+    int size = 0;
+    vector<Edge> edges = {};
+};
+
+struct DefaultTree {
+    int size = 7;
+    vector<Edge> edges = {
+        Edge(0, 1),
+        Edge(0, 2),
+        Edge(0, 3),
+        Edge(2, 4),
+        Edge(2, 5),
+        Edge(3, 6)
+    };
+};
 
 struct DefaultTreeTest: public ::testing::Test {
     protected:
@@ -31,18 +49,4 @@ struct EmptyTreeTest: public ::testing::Test {
     }
 };
 
-TEST_F (EmptyTreeTest, EmptyTest) {
-    ASSERT_EQ(0, tree->size());
-}
-
-TEST_F (DefaultTreeTest, SizeTest) {
-    ASSERT_EQ(7, tree->size());
-}
-
-TEST_F (DefaultTreeTest, DFSTestSimple) {    
-    vector<int> dfs = {0, 1, 2, 4, 5, 3, 6};
-    vector<int> out = tree->dfs();
-    for (int i = 0; i < out.size(); i++) {
-        EXPECT_EQ(dfs[i], out[i]);
-    }
-}
+#endif // TREE_TESTS_H

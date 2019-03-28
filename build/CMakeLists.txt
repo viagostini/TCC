@@ -9,14 +9,14 @@ set (CMAKE_CXX_STANDARD 11)
 # Link runTests with what we want to test and the GTest and pthread library
 add_executable(
     runTests
-    ../src/edge.cpp
-    ../src/node.cpp
-    ../src/tree.cpp
-    ../src/TableAlgorithm.cpp
-    ../tests/Tests.cpp
-    ../tests/EdgeTests.cpp
-    ../tests/NodeTests.cpp
-    ../tests/TreeTests.cpp
-    ../tests/TableAlgorithmTests.cpp
+    ../code/src/edge.cpp
+    ../code/src/node.cpp
+    ../code/src/tree.cpp
+    ../code/src/TableAlgorithm.cpp
+    ../tests/src/Tests.cpp
+    ../tests/src/EdgeTests.cpp
+    ../tests/src/NodeTests.cpp
+    ../tests/src/TreeTests.cpp
+    ../tests/src/TableAlgorithmTests.cpp
 )
 target_link_libraries(runTests ${GTEST_LIBRARIES} pthread)

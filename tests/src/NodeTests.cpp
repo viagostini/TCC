@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../include/node.hpp"
+#include "../../code/include/node.hpp"
 
 TEST (NodeTest, SimpleTest) {
     Node node(2);
