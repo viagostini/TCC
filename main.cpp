@@ -1,5 +1,5 @@
 #include <iostream>
-#include "tree.hpp"
+#include "Tree.hpp"
 
 using std::cin;
 using std::cout;

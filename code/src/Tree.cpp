@@ -1,4 +1,4 @@
-#include "../include/tree.hpp"
+#include "../include/Tree.hpp"
 
 Tree::Tree () {
     int size = 0;

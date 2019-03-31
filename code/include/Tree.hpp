@@ -2,8 +2,8 @@
 #define TREE_H
 
 #include <vector>
-#include "edge.hpp"
-#include "node.hpp"
+#include "Edge.hpp"
+#include "Node.hpp"
 
 using std::vector;
 
@@ -12,7 +12,7 @@ class Tree {
     int size_;
     vector<int> depth_;
     vector<int> parent_;
-    vector <Node> nodes_;
+    vector<Node> nodes_;
 
     public:
     Tree ();

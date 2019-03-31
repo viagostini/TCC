@@ -2,7 +2,7 @@
 #define TREE_TESTS_H
 
 #include <gtest/gtest.h>
-#include "../../code/include/tree.hpp"
+#include "../../code/include/Tree.hpp"
 
 struct EmptyTree {
     int size = 0;

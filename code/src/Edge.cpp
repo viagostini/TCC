@@ -1,4 +1,4 @@
-#include "../include/edge.hpp"
+#include "../include/Edge.hpp"
 
 Edge::Edge (int from, int to) {
     if (from == to) {

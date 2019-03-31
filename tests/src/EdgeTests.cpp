@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../../code/include/edge.hpp"
+#include "../../code/include/Edge.hpp"
 
 TEST (EdgeTest, SimpleTest) {
     Edge edge(4, 5);

@@ -2,7 +2,7 @@
 #define TABLE_H
 
 #include <vector>
-#include "../include/tree.hpp"
+#include "../include/Tree.hpp"
 
 using std::vector;
 

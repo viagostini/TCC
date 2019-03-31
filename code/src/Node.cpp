@@ -1,4 +1,4 @@
-#include "../include/node.hpp"
+#include "../include/Node.hpp"
 
 Node::Node (int label): label_(label) {}
 
