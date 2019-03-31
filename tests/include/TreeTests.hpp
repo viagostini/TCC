@@ -12,12 +12,12 @@ struct EmptyTree {
 struct DefaultTree {
     int size = 7;
     vector<Edge> edges = {
-        Edge(0, 1),
-        Edge(0, 2),
-        Edge(0, 3),
-        Edge(2, 4),
-        Edge(2, 5),
-        Edge(3, 6)
+        make_edge(0, 1),
+        make_edge(0, 2),
+        make_edge(0, 3),
+        make_edge(2, 4),
+        make_edge(2, 5),
+        make_edge(3, 6)
     };
 };
 

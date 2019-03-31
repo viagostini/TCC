@@ -2,10 +2,13 @@
 #define TREE_H
 
 #include <vector>
+#include <utility>
 #include "Edge.hpp"
 #include "Node.hpp"
 
+using std::pair;
 using std::vector;
+using std::make_pair;
 
 class Tree {
     private:

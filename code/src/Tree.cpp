@@ -12,12 +12,10 @@ Tree::Tree (int size, vector<Edge> edges) {
         Node node(i);
         nodes_.push_back(node);
     }
-    for (Edge e : edges) {
-        int u = e.from();
-        int v = e.to();
-        nodes_[u].add_child(nodes_[v]);
-        depth_[v] = depth_[u] + 1;
-        parent_[v] = u;
+    for (Edge &e : edges) {
+        nodes_[e.from].add_child(nodes_[e.to]);
+        depth_[e.to] = depth_[e.from] + 1;
+        parent_[e.to] = e.from;
     }
 }
 

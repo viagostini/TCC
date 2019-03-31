@@ -3,15 +3,23 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <utility>
 
-class Edge {
-    public:
-    int from_;
-    int to_;
+using std::pair;
 
-    Edge (int from, int to);
-    int from ();
-    int to ();
-};
+typedef pair<int,int> Edge;
+#define from first
+#define to second
+#define make_edge make_pair
+
+// class Edge {
+//     public:
+//     int from_;
+//     int to_;
+
+//     Edge (int from, int to);
+//     int from ();
+//     int to ();
+// };
 
 #endif // EDGE_H
