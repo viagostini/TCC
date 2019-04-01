@@ -19,13 +19,13 @@ class Tree {
 
     public:
     Tree ();
-    Tree (int size, vector<Edge> edges);
+    Tree (int size, const vector<Edge>& edges);
     int size ();
     int depth (int u);
     int parent (int u);
     vector<Node> nodes ();
     vector<int> dfs ();
-    void dfs (int u, vector<int> &ret);
+    void dfs (int u, vector<int>& ret);
 };
 
 #endif // TREE_H
