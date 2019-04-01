@@ -8,12 +8,12 @@ using std::vector;
 
 class TableAlgorithm {
     private:
-    Tree tree;
+    Tree tree_;
     vector<vector<int>> table_;
     void dfsUtil_ (int u, int depth);
 
     public:
-    TableAlgorithm (Tree &tree);
+    TableAlgorithm (Tree& tree);
     vector<vector<int>> table ();
     int query (int u, int d);
 };

@@ -1,7 +1,8 @@
 #include "../include/TableAlgorithm.hpp"
 
-TableAlgorithm::TableAlgorithm (Tree &tree) {
+TableAlgorithm::TableAlgorithm (Tree& tree) {
     // allocating lookup table
+    tree_ = tree;
     table_.resize(tree.size());
     for (int i = 0; i < tree.size(); i++)
         table_[i].resize(tree.size());
