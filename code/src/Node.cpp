@@ -2,7 +2,7 @@
 
 Node::Node (int label): label_(label) {}
 
-int Node::label () {
+int Node::label () const {
     return label_;
 }
 
@@ -22,7 +22,7 @@ int Node::label () {
 //     parent_ = parent;
 // }
 
-vector<Node> Node::children () {
+vector<Node> Node::children () const {
     return children_;
 }
 

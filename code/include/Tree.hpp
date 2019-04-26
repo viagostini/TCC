@@ -20,12 +20,12 @@ class Tree {
     public:
     Tree ();
     Tree (int size, const vector<Edge>& edges);
-    int size ();
-    int depth (int u);
-    int parent (int u);
-    vector<Node> nodes ();
-    vector<int> dfs ();
-    void dfs (int u, vector<int>& ret);
+    int size () const;
+    int depth (int u) const;
+    int parent (int u) const;
+    vector<Node> nodes () const;
+    vector<int> dfs () const;
+    void dfs (int u, vector<int>& ret) const ;
 };
 
 #endif // TREE_H

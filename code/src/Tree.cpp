@@ -19,29 +19,29 @@ Tree::Tree (int size, const vector<Edge>& edges) {
     }
 }
 
-int Tree::size () {
+int Tree::size () const {
     return size_;
 }
 
-int Tree::depth (int u) {
+int Tree::depth (int u) const {
     return depth_[u];
 }
 
-int Tree::parent (int u) {
+int Tree::parent (int u) const {
     return parent_[u];
 }
 
-vector<Node> Tree::nodes () {
+vector<Node> Tree::nodes () const {
     return nodes_;
 }
 
-vector<int> Tree::dfs () {
+vector<int> Tree::dfs () const {
     vector<int> ret;
     dfs(0, ret);
     return ret;
 }
 
-void Tree::dfs (int u, vector<int>& ret) {
+void Tree::dfs (int u, vector<int>& ret) const {
     Node root = nodes_[u];
     ret.push_back(root.label());
     for (Node node : root.children())

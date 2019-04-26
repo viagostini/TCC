@@ -14,12 +14,12 @@ class Node {
 
     public:
     Node (int label);
-    int label ();
+    int label () const;
     // int depth ();
     // int parent ();
     // void setDepth (int depth);
     // void setParent (int parent);
-    vector<Node> children ();
+    vector<Node> children () const;
     void add_child (Node child);
 };
 
