@@ -12,6 +12,7 @@ class TableAlgorithm {
 
     public:
     TableAlgorithm (const Tree& tree);
+    void print_table () const;
     int query (int u, int d) const;
 };
 
