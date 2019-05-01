@@ -24,10 +24,14 @@ int Tree::size () const {
 }
 
 int Tree::depth (int u) const {
+    if (u >= size_)
+        throw std::invalid_argument("invalid node label!");
     return depth_[u];
 }
 
 int Tree::parent (int u) const {
+    if (u >= size_)
+        throw std::invalid_argument("invalid node label!");
     return parent_[u];
 }
 

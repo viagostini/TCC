@@ -1,16 +1,35 @@
 #include "../include/TableAlgorithm.hpp"
 
-TableAlgorithm::TableAlgorithm (const Tree& tree) {
-    int tree_size = tree.size();
-    table_.resize(tree_size);
-    for (int i = 0; i < tree_size; i++)
-        table_[i].resize(tree_size);
-    for (int u = 0; u < tree_size; u++) {
+TableAlgorithm::TableAlgorithm (const Tree* tree) {
+    tree_ = tree;
+    resize_table();
+    fill_table();
+}
+
+int TableAlgorithm::query (int node, int depth) const {
+    if (depth < 0)
+        throw std::invalid_argument("depth cannot be negative!");
+    if (node < 0 || node >= tree_->size())
+        throw std::invalid_argument("invalid node label!");
+    if (depth > tree_->depth(node))
+        return -1;
+    return table_[node][depth];
+}
+
+void TableAlgorithm::resize_table() {
+    int size = tree_->size();
+    table_.resize(size);
+    for (int i = 0; i < size; i++)
+        table_[i].resize(size);
+}
+
+void TableAlgorithm::fill_table() {
+    for (int u = 0; u < tree_->size(); u++) {
         int v = u;
-        table_[u][tree.depth(u)] = u;
-        for (int i = tree.depth(u)-1; i >= 0; i--) {
-            table_[u][i] = tree.parent(v);
-            v = tree.parent(u);
+        table_[u][tree_->depth(u)] = u;
+        for (int i = tree_->depth(u)-1; i >= 0; i--) {
+            table_[u][i] = tree_->parent(v);
+            v = tree_->parent(u);
         }
     }
 }
@@ -24,7 +43,4 @@ void TableAlgorithm::print_table() const {
     }
 }
 
-int TableAlgorithm::query (int u, int d) const {
-    return table_[u][d];
-}
 

@@ -8,6 +8,14 @@ TEST_F (DefaultTreeTest, SizeTest) {
     ASSERT_EQ(7, tree->size());
 }
 
+TEST_F (DefaultTreeTest, InvalidNodeDepth) {
+    ASSERT_THROW(tree->depth(100), std::invalid_argument);
+}
+
+TEST_F (DefaultTreeTest, InvalidNodeParent) {
+    ASSERT_THROW(tree->parent(100), std::invalid_argument);
+}
+
 TEST_F (DefaultTreeTest, DFSTestSimple) {    
     vector<int> dfs = {0, 1, 2, 4, 5, 3, 6};
     vector<int> out = tree->dfs();

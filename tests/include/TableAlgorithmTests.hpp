@@ -13,7 +13,7 @@ struct DefaultTableTest: public ::testing::Test {
 
     void SetUp () {
         tree = new Tree(default_tree.size, default_tree.edges);
-        table = new TableAlgorithm(*tree);
+        table = new TableAlgorithm(tree);
     }
 
     void TearDown () {
