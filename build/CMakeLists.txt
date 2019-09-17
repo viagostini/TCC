@@ -12,12 +12,14 @@ add_executable(
     ../code/src/Edge.cpp
     ../code/src/Node.cpp
     ../code/src/Tree.cpp
+    ../code/src/NaiveAlgorithm.cpp
     ../code/src/TableAlgorithm.cpp
     ../code/src/JumpPointers.cpp
     ../tests/src/Tests.cpp
     ../tests/src/EdgeTests.cpp
     ../tests/src/NodeTests.cpp
     ../tests/src/TreeTests.cpp
+    ../tests/src/NaiveAlgorithmTests.cpp
     ../tests/src/TableAlgorithmTests.cpp
     ../tests/src/JumpPointersTests.cpp
 )
