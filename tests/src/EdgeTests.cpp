@@ -1,8 +1,11 @@
-#include <gtest/gtest.h>
+#include "../include/catch.hpp"
 #include "../../code/include/Edge.hpp"
 
-TEST (EdgeTest, SimpleTest) {
-    Edge edge(4, 5);
-    ASSERT_EQ(4, edge.from);
-    ASSERT_EQ(5, edge.to);
+TEST_CASE ("Edge", "[edge]") {
+    int x = 4, y = 5;
+    Edge edge(x, y);
+
+    REQUIRE(edge.from == 4);
+    REQUIRE(edge.to == 5);
 }
+

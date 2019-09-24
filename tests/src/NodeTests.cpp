@@ -1,12 +1,20 @@
-#include <gtest/gtest.h>
+#include "../include/catch.hpp"
 #include "../../code/include/Node.hpp"
 
-TEST (NodeTest, SimpleTest) {
-    Node node(2);
-    Node another_node(1);
-    ASSERT_EQ(2, node.label());
-    ASSERT_EQ(true, node.children().empty());
-    node.add_child(another_node);
-    ASSERT_EQ(1, node.children().size());
-    ASSERT_EQ(1, node.children()[0].label());
+TEST_CASE ("Node Test", "[node]") {
+    Node node(1);
+    
+    SECTION ("Node has a label")
+        REQUIRE(node.label() == 1);
+
+    SECTION ("New node has no children")
+        REQUIRE(node.children().empty());
+
+    Node another_node(2);
+
+    SECTION ("A node can be added as another node's child") {
+        node.add_child(another_node);
+        REQUIRE(node.children().size() == 1);
+        REQUIRE(node.children()[0].label() == 2);
+    }
 }

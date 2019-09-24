@@ -1,45 +1,35 @@
-#include "../include/JumpPointersTests.hpp"
+#include <stdexcept>
+#include "../include/catch.hpp"
+#include "../include/TestUtils.hpp"
+#include "../../code/include/JumpPointers.hpp"
 
-TEST_F (DefaultTreeJumpTest, Query_DepthZero_ReturnZero) {
-    for (int i = 0; i < tree->size(); i++) {
-        ASSERT_EQ(0, jump_pointers->query1(i, 0));
-        ASSERT_EQ(0, jump_pointers->query2(i, 0));
+TEST_CASE ("Jump Pointers", "[jump]") {
+    struct DefaultTree default_tree;
+    Tree *tree = new Tree(default_tree.size, default_tree.edges);
+    JumpPointerLA *jump = new JumpPointerLA(tree);
+
+    SECTION ("Has a query function") {
+        // TODO: maybe test all possible queries?
+        REQUIRE(jump->query1(4,1) == 2);
+        REQUIRE(jump->query1(6,1) == 3);
+        REQUIRE(jump->query2(4,1) == 2);
+        REQUIRE(jump->query2(6,1) == 3);
+
+        SECTION ("Query function returns -1 if there is no answer") {
+            REQUIRE(jump->query1(1, tree->size()) == -1);
+            REQUIRE(jump->query2(1, tree->size()) == -1);
+        }
+
+        SECTION ("Query function throws if negative depth") {
+            REQUIRE_THROWS_AS(jump->query1(1, -1), std::invalid_argument);
+            REQUIRE_THROWS_AS(jump->query2(1, -1), std::invalid_argument);
+        }
+
+        SECTION ("Query function throws if invalid node") {
+            REQUIRE_THROWS_AS(jump->query1(-1, 0), std::invalid_argument);
+            REQUIRE_THROWS_AS(jump->query1(tree->size(), 0), std::invalid_argument);
+            REQUIRE_THROWS_AS(jump->query2(-1, 0), std::invalid_argument);
+            REQUIRE_THROWS_AS(jump->query2(tree->size(), 0), std::invalid_argument);
+        }
     }
-}
-
-TEST_F (DefaultTreeJumpTest, Query_DefaultTest) {
-    // TODO: maybe test all possible queries?
-    ASSERT_EQ(2, jump_pointers->query1(4, 1));
-    ASSERT_EQ(3, jump_pointers->query1(6, 1));
-    ASSERT_EQ(2, jump_pointers->query2(4, 1));
-    ASSERT_EQ(3, jump_pointers->query2(6, 1));
-}
-
-TEST_F (DefaultTreeJumpTest, Query_OwnDepth_ReturnItself) {
-    for (int i = 0; i < tree->size(); i++) {
-        ASSERT_EQ(i, jump_pointers->query1(i, tree->depth(i)));
-        ASSERT_EQ(i, jump_pointers->query2(i, tree->depth(i)));
-    }
-}
-
-TEST_F (DefaultTreeJumpTest, Query_NegativeDepth_ThrowsException) {
-    ASSERT_THROW(jump_pointers->query1(1, -1), std::invalid_argument);
-    ASSERT_THROW(jump_pointers->query2(1, -1), std::invalid_argument);
-}
-
-TEST_F (DefaultTreeJumpTest, Query_LargerDepth_ReturnsNegativeOne) {
-    ASSERT_EQ(-1, jump_pointers->query1(1, tree->size()));
-    ASSERT_EQ(-1, jump_pointers->query2(1, tree->size()));
-}
-
-TEST_F (DefaultTreeJumpTest, Query_InvalidNode_ThrowsException) {
-    ASSERT_THROW(jump_pointers->query1(-1, 1), std::invalid_argument);
-    ASSERT_THROW(jump_pointers->query1(100, 1), std::invalid_argument);
-    ASSERT_THROW(jump_pointers->query2(-1, 1), std::invalid_argument);
-    ASSERT_THROW(jump_pointers->query2(100, 1), std::invalid_argument);
-}
-
-TEST_F (LinearTreeJumpTest, DefaultTest) {
-    ASSERT_EQ(1, jump_pointers->query1(49, 1));
-    ASSERT_EQ(1, jump_pointers->query2(49, 1));
 }

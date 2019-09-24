@@ -1,35 +1,29 @@
-#include "../include/NaiveAlgorithmTests.hpp"
+#include <stdexcept>
+#include "../include/catch.hpp"
+#include "../include/TestUtils.hpp"
+#include "../../code/include/NaiveAlgorithm.hpp"
 
-TEST_F (DefaultTreeNaiveTest, Query_DepthZero_ReturnZero) {
-    for (int i = 0; i < tree->size(); i++) {
-        ASSERT_EQ(0, naive->query(i, 0));
+TEST_CASE ("Naive algorithm", "[naive]") {
+    SECTION ("Default tree") {
+        struct DefaultTree default_tree;
+        Tree *tree = new Tree(default_tree.size, default_tree.edges);
+        NaiveAlgorithm *naive = new NaiveAlgorithm(tree);
+
+        SECTION ("Has a query function") {
+            // TODO: maybe test all possible queries?
+            REQUIRE(naive->query(4,1) == 2);
+            REQUIRE(naive->query(6,1) == 3);
+
+            SECTION ("Query function returns -1 if there is no answer")
+                REQUIRE(naive->query(1, tree->size()) == -1);
+            
+            SECTION ("Query function throws if negative depth")
+                REQUIRE_THROWS_AS(naive->query(1, -1), std::invalid_argument);
+
+            SECTION ("Query function throws if invalid node") {
+                REQUIRE_THROWS_AS(naive->query(-1, 0), std::invalid_argument);
+                REQUIRE_THROWS_AS(naive->query(tree->size(), 0), std::invalid_argument);
+            }
+        }
     }
 }
-
-TEST_F (DefaultTreeNaiveTest, Query_DefaultTest) {
-    // TODO: maybe test all possible queries?
-    ASSERT_EQ(2, naive->query(4, 1));
-    ASSERT_EQ(3, naive->query(6, 1));
-    ASSERT_EQ(2, naive->query(4, 1));
-    ASSERT_EQ(3, naive->query(6, 1));
-}
-
-TEST_F (DefaultTreeNaiveTest, Query_OwnDepth_ReturnItself) {
-    for (int i = 0; i < tree->size(); i++) {
-        ASSERT_EQ(i, naive->query(i, tree->depth(i)));
-    }
-}
-
-TEST_F (DefaultTreeNaiveTest, Query_NegativeDepth_ThrowsException) {
-    ASSERT_THROW(naive->query(1, -1), std::invalid_argument);
-}
-
-TEST_F (DefaultTreeNaiveTest, Query_LargerDepth_ReturnsNegativeOne) {
-    ASSERT_EQ(-1, naive->query(1, tree->size()));
-}
-
-TEST_F (DefaultTreeNaiveTest, Query_InvalidNode_ThrowsException) {
-    ASSERT_THROW(naive->query(-1, 1), std::invalid_argument);
-    ASSERT_THROW(naive->query(100, 1), std::invalid_argument);
-}
-

@@ -1,29 +1,29 @@
-#include "../include/TableAlgorithmTests.hpp"
+#include <stdexcept>
+#include "../include/catch.hpp"
+#include "../include/TestUtils.hpp"
+#include "../../code/include/TableAlgorithm.hpp"
 
-TEST_F (DefaultTableTest, DepthZero) {
-    ASSERT_EQ(0, table->query(0, 0));
-    ASSERT_EQ(0, table->query(4, 0));
-}
+TEST_CASE ("Table algorithm", "[table]") {
+    SECTION ("Default tree") {
+        struct DefaultTree default_tree;
+        Tree *tree = new Tree(default_tree.size, default_tree.edges);
+        TableAlgorithm *table = new TableAlgorithm(tree);
 
-TEST_F (DefaultTableTest, DefaultTest) {
-    ASSERT_EQ(2, table->query(4, 1));
-    ASSERT_EQ(3, table->query(6, 1));
-}
+        SECTION("Has a query function") {
+            // TODO: maybe test all possible queries?
+            REQUIRE(table->query(4,1) == 2);
+            REQUIRE(table->query(6,1) == 3);
 
-TEST_F (DefaultTableTest, OwnDepth) {
-    ASSERT_EQ(6, table->query(6, tree->depth(6)));
-    ASSERT_EQ(1, table->query(1, tree->depth(1)));
-}
+            SECTION ("Query function returns -1 if there is no answer")
+                REQUIRE(table->query(1, tree->size()) == -1);
+            
+            SECTION ("Query function throws if negative depth")
+                REQUIRE_THROWS_AS(table->query(1, -1), std::invalid_argument);
 
-TEST_F (DefaultTableTest, NegativeDepth) {
-    ASSERT_THROW(table->query(1, -1), std::invalid_argument);
-}
-
-TEST_F (DefaultTableTest, LargerDepth) {
-    ASSERT_EQ(-1, table->query(1, 100));
-}
-
-TEST_F (DefaultTableTest, InvalidNode) {
-    ASSERT_THROW(table->query(-1, 1), std::invalid_argument);
-    ASSERT_THROW(table->query(100, 1), std::invalid_argument);
+            SECTION ("Query function throws if invalid node") {
+                REQUIRE_THROWS_AS(table->query(-1, 0), std::invalid_argument);
+                REQUIRE_THROWS_AS(table->query(tree->size(), 0), std::invalid_argument);
+            }
+        }
+    }
 }
