@@ -13,8 +13,8 @@ TEST_CASE ("Node Test", "[node]") {
     Node another_node(2);
 
     SECTION ("A node can be added as another node's child") {
-        node.add_child(another_node);
+        node.add_child(&another_node);
         REQUIRE(node.children().size() == 1);
-        REQUIRE(node.children()[0].label() == 2);
+        REQUIRE(node.children()[0]->label() == 2);
     }
 }

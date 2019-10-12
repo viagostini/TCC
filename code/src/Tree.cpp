@@ -9,11 +9,11 @@ Tree::Tree (int size, const vector<Edge>& edges) {
     depth_.resize(size);
     parent_.resize(size);
     for (int i = 0; i < size; i++) {
-        Node node(i);
+        Node *node = new Node(i);
         nodes_.push_back(node);
     }
     for (const Edge& e : edges) {
-        nodes_[e.from].add_child(nodes_[e.to]);
+        nodes_[e.from]->add_child(nodes_[e.to]);
         depth_[e.to] = depth_[e.from] + 1;
         parent_[e.to] = e.from;
     }
@@ -39,7 +39,7 @@ int Tree::parent (int u) const {
     return parent_[u];
 }
 
-vector<Node> Tree::nodes () const {
+vector<Node*> Tree::nodes () const {
     return nodes_;
 }
 
@@ -50,10 +50,10 @@ vector<int> Tree::dfs () const {
 }
 
 void Tree::dfs (int u, vector<int>& ret) const {
-    Node root = nodes_[u];
-    ret.push_back(root.label());
-    for (Node node : root.children())
-        dfs(node.label(), ret);
+    Node *root = nodes_[u];
+    ret.push_back(root->label());
+    for (Node *node : root->children())
+        dfs(node->label(), ret);
 }
 
 

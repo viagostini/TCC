@@ -58,7 +58,7 @@ void JumpPointerLA::dfs(int v, int p, int d) {
     for (int i = 1; i <= l_; i++)
         jmp_[v][i] = jmp_[jmp_[v][i-1]][i-1];
     
-    for (Node u: tree_->nodes()[v].children())
-        if (u.label() != p)
-            dfs(u.label(), v, d+1);
+    for (Node *u: tree_->nodes()[v]->children())
+        if (u->label() != p)
+            dfs(u->label(), v, d+1);
 }

@@ -22,10 +22,10 @@ int Node::label () const {
 //     parent_ = parent;
 // }
 
-vector<Node> Node::children () const {
+vector<Node*> Node::children () const {
     return children_;
 }
 
-void Node::add_child (Node child) {
+void Node::add_child (Node *child) {
     this->children_.push_back(child);
 }

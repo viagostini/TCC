@@ -1,7 +1,11 @@
 #include <stdexcept>
+#include <chrono>
+#include <iostream>
 #include "../include/catch.hpp"
 #include "../include/TestUtils.hpp"
 #include "../../code/include/TableAlgorithm.hpp"
+
+using namespace std;
 
 TEST_CASE ("Table algorithm", "[table]") {
     SECTION ("Default tree") {

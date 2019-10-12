@@ -16,7 +16,7 @@ class Tree {
     int size_;
     vector<int> depth_;
     vector<int> parent_;
-    vector<Node> nodes_;
+    vector<Node*> nodes_;
 
     public:
     Tree ();
@@ -24,7 +24,7 @@ class Tree {
     int size () const;
     int depth (int u) const;
     int parent (int u) const;
-    vector<Node> nodes () const;
+    vector<Node*> nodes () const;
     vector<int> dfs () const;
     void dfs (int u, vector<int>& ret) const ;
 };

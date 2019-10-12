@@ -10,7 +10,7 @@ class Node {
     int label_;
     // int depth_;
     // int parent_;
-    vector<Node> children_;
+    vector<Node*> children_;
 
     public:
     Node (int label);
@@ -19,8 +19,8 @@ class Node {
     // int parent ();
     // void setDepth (int depth);
     // void setParent (int parent);
-    vector<Node> children () const;
-    void add_child (Node child);
+    vector<Node*> children () const;
+    void add_child (Node *child);
 };
 
 #endif // NODE_H
