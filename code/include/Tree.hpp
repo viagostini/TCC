@@ -16,10 +16,10 @@ class Tree {
     int size_;
     vector<int> depth_;
     vector<int> parent_;
-    const Node *root;
 
     public:
     Tree (int size, const Node *tree_root);
+    const Node *root;
     int size () const;
     int depth (int u) const;
     int parent (int u) const;
