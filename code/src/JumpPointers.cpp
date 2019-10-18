@@ -1,9 +1,23 @@
 #include "../include/JumpPointers.hpp"
 
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
 JumpPointerLA::JumpPointerLA (const Tree* tree) {
     tree_ = tree;
     resize_tables();
-    dfs(0, 0, 0);
+    seen.resize(tree->size());
+    for (int i = 0; i < tree->size(); i++)
+        seen[i] = 0;
+    set_jump_table();
+    /*for (int i = 0; i < tree_->size(); i++) {
+        for (int j = 0; j <= max_jumps; j++) {
+            cout << jmp_[i][j] << "  ";
+        }
+        cout << endl << endl;
+    }*/
 }
 
 int JumpPointerLA::query1 (int node, int depth) {
@@ -33,8 +47,9 @@ int JumpPointerLA::query2 (int node, int depth) {
     if (depth > tree_->depth(node))
         return -1;
 
-    while (depth_[node] != depth) {
-        int step = get_msb(depth_[node] - depth);
+    while (tree_->depth(node) != depth) {
+        int step = get_msb(tree_->depth(node) - depth);
+        //cout << "step = " << step << endl;
         node = jmp_[node][step];
     }
     return node;
@@ -47,18 +62,15 @@ int JumpPointerLA::get_msb (int x) {
 void JumpPointerLA::resize_tables() {
     int size = tree_->size();
     depth_.resize(size);
-    l_ = ceil(log2(size));
-    jmp_.assign(size, vector<int>(l_+1));
+    max_jumps = ceil(log2(size));
+    jmp_.assign(size, vector<int>(max_jumps + 1));
 }
 
-void JumpPointerLA::dfs(int v, int p, int d) {
-    depth_[v] = d;
-    jmp_[v][0] = p;
-    
-    for (int i = 1; i <= l_; i++)
-        jmp_[v][i] = jmp_[jmp_[v][i-1]][i-1];
-    
-    for (Node *u: tree_->nodes()[v]->children())
-        if (u->label() != p)
-            dfs(u->label(), v, d+1);
+void JumpPointerLA::set_jump_table() {
+    for (int node = 0; node < tree_->size(); node++)
+        jmp_[node][0] = tree_->parent(node);
+
+    for (int j = 1; j <= max_jumps; j++)
+        for (int i = 0; i < tree_->size(); i++)
+            jmp_[i][j] = jmp_[jmp_[i][j-1]][j-1];
 }

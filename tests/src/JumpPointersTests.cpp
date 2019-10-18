@@ -5,18 +5,38 @@
 
 TEST_CASE ("Jump Pointers", "[jump]") {
     struct DefaultTree default_tree;
-    Tree *tree = new Tree(default_tree.size, default_tree.edges);
+    vector<Node*> nodes;
+        for (int i = 0; i < default_tree.size; i++) {
+            Node *node = new Node(i);
+            nodes.push_back(node);
+        }
+        for (const Edge& e : default_tree.edges) {
+            nodes[e.from]->add_child(nodes[e.to]);
+        }
+
+        Tree *tree = new Tree(default_tree.size, nodes[0]);
     JumpPointerLA *jump = new JumpPointerLA(tree);
 
     SECTION ("Has a query function") {
         // TODO: maybe test all possible queries?
-        REQUIRE(jump->query1(4,1) == 2);
-        REQUIRE(jump->query1(6,1) == 3);
-        REQUIRE(jump->query2(4,1) == 2);
-        REQUIRE(jump->query2(6,1) == 3);
+        CHECK(jump->query2(0,0) == 0);
+        CHECK(jump->query2(1,0) == 0);
+        CHECK(jump->query2(2,0) == 0);
+        CHECK(jump->query2(2,1) == 2);
+        CHECK(jump->query2(3,0) == 0);
+        CHECK(jump->query2(3,1) == 3);
+        CHECK(jump->query2(4,0) == 0);
+        CHECK(jump->query2(4,1) == 2);
+        CHECK(jump->query2(4,2) == 4);
+        CHECK(jump->query2(5,0) == 0);
+        CHECK(jump->query2(5,1) == 2);
+        CHECK(jump->query2(5,2) == 5);
+        CHECK(jump->query2(6,0) == 0);
+        CHECK(jump->query2(6,1) == 3);
+        CHECK(jump->query2(6,2) == 6);
 
         SECTION ("Query function returns -1 if there is no answer") {
-            REQUIRE(jump->query1(1, tree->size()) == -1);
+            REQUIRE(jump->query2(1, tree->size()) == -1);
             REQUIRE(jump->query2(1, tree->size()) == -1);
         }
 

@@ -6,7 +6,17 @@
 TEST_CASE ("Tree", "[tree]") {
     SECTION ("Default tree") {
         struct DefaultTree default_tree;
-        Tree *tree = new Tree(default_tree.size, default_tree.edges);
+        
+        vector<Node*> nodes;
+        for (int i = 0; i < default_tree.size; i++) {
+            Node *node = new Node(i);
+            nodes.push_back(node);
+        }
+        for (const Edge& e : default_tree.edges) {
+            nodes[e.from]->add_child(nodes[e.to]);
+        }
+
+        Tree *tree = new Tree(default_tree.size, nodes[0]);
 
         SECTION ("Tree has a size")
             REQUIRE(tree->size() == default_tree.size);
@@ -31,13 +41,6 @@ TEST_CASE ("Tree", "[tree]") {
                 REQUIRE_THROWS_AS(tree->depth(-1), std::invalid_argument);
                 REQUIRE_THROWS_AS(tree->depth(tree->size()), std::invalid_argument);
             }
-        }
-
-        SECTION ("Tree has a proper DFS order") {
-            vector<int> dfs = {0, 1, 2, 4, 5, 3, 6};
-            vector<int> out = tree->dfs();
-            for (int i = 0; i < out.size(); i++)
-                REQUIRE(dfs[i] == out[i]);
         }
     }
 }

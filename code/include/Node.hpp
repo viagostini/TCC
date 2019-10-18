@@ -6,20 +6,11 @@
 using std::vector;
 
 class Node {
-    private:
-    int label_;
-    // int depth_;
-    // int parent_;
-    vector<Node*> children_;
-
     public:
+    const int label;
+    vector<Node*> children;
+
     Node (int label);
-    int label () const;
-    // int depth ();
-    // int parent ();
-    // void setDepth (int depth);
-    // void setParent (int parent);
-    vector<Node*> children () const;
     void add_child (Node *child);
 };
 

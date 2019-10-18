@@ -6,7 +6,17 @@
 TEST_CASE ("Naive algorithm", "[naive]") {
     SECTION ("Default tree") {
         struct DefaultTree default_tree;
-        Tree *tree = new Tree(default_tree.size, default_tree.edges);
+        vector<Node*> nodes;
+        for (int i = 0; i < default_tree.size; i++) {
+            Node *node = new Node(i);
+            nodes.push_back(node);
+        }
+        for (const Edge& e : default_tree.edges) {
+            nodes[e.from]->add_child(nodes[e.to]);
+        }
+
+        Tree *tree = new Tree(default_tree.size, nodes[0]);
+
         NaiveAlgorithm *naive = new NaiveAlgorithm(tree);
 
         SECTION ("Has a query function") {

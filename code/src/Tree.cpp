@@ -1,22 +1,13 @@
 #include "../include/Tree.hpp"
 
-Tree::Tree () {
-    int size = 0;
-}
-
-Tree::Tree (int size, const vector<Edge>& edges) {
+Tree::Tree (int size, const Node *tree_root) {
+    root = tree_root;
     size_ = size;
+
     depth_.resize(size);
     parent_.resize(size);
-    for (int i = 0; i < size; i++) {
-        Node *node = new Node(i);
-        nodes_.push_back(node);
-    }
-    for (const Edge& e : edges) {
-        nodes_[e.from]->add_child(nodes_[e.to]);
-        depth_[e.to] = depth_[e.from] + 1;
-        parent_[e.to] = e.from;
-    }
+    
+    dfs(const_cast<Node *>(root), 0);
 }
 
 int Tree::size () const {
@@ -39,21 +30,12 @@ int Tree::parent (int u) const {
     return parent_[u];
 }
 
-vector<Node*> Tree::nodes () const {
-    return nodes_;
-}
-
-vector<int> Tree::dfs () const {
-    vector<int> ret;
-    dfs(0, ret);
-    return ret;
-}
-
-void Tree::dfs (int u, vector<int>& ret) const {
-    Node *root = nodes_[u];
-    ret.push_back(root->label());
-    for (Node *node : root->children())
-        dfs(node->label(), ret);
+void Tree::dfs (Node *node, int depth) {
+    depth_[node->label] = depth;
+    for (Node *child : node->children) {
+        parent_[child->label] = node->label;
+        dfs(child, depth + 1);
+    }
 }
 
 
