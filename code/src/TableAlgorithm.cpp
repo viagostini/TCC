@@ -37,14 +37,14 @@ void TableAlgorithm::fill_table() {
         int depth = max(0, tree_->depth(u) - 1);
         for (int i = tree_->depth(u)-1; i >= 0; i--) {
             table_[u][i] = tree_->parent(v);
-            v = tree_->parent(u);
+            v = tree_->parent(v);
         }
     }
 }
 
 void TableAlgorithm::print_table() const {
     for (int i = 0; i < table_.size(); i++) {
-        for (int j = 0; j < table_.size(); j++) {
+        for (int j = 0; j < table_[i].size(); j++) {
             fprintf(stderr, "%d ", table_[i][j]);
         }
         fprintf(stderr, "\n");
