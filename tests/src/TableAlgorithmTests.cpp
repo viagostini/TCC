@@ -3,6 +3,7 @@
 #include <iostream>
 #include "../include/catch.hpp"
 #include "../include/TestUtils.hpp"
+#include "../../generators/generators.hpp"
 #include "../../code/include/TableAlgorithm.hpp"
 
 using namespace std;
@@ -39,4 +40,33 @@ TEST_CASE ("Table algorithm", "[table]") {
             }
         }
     }
+    SECTION ("Linear Tree") {
+            int n = 7;
+            vector<Node*> nodes;
+            build_balanced_kary_tree(n, 1, nodes);
+            Tree *tree = new Tree(nodes.size(), nodes[0]);
+            TableAlgorithm *table = new TableAlgorithm(tree);
+
+            SECTION ("Has a query function") {
+                for (int i = 0; i < n; i++) {
+                    for (int j = tree->depth(i); j >= 0; j--) {
+                        REQUIRE(table->query(i, j) == j);
+                    }
+                }
+
+                SECTION ("Query function returns -1 if there is no answer") {
+                    REQUIRE(table->query(1, tree->size()) == -1);
+                    REQUIRE(table->query(1, tree->size()) == -1);
+                }
+
+                SECTION ("Query function throws if negative depth") {
+                    REQUIRE_THROWS_AS(table->query(1, -1), std::invalid_argument);
+                }
+
+                SECTION ("Query function throws if invalid node") {
+                    REQUIRE_THROWS_AS(table->query(-1, 0), std::invalid_argument);
+                    REQUIRE_THROWS_AS(table->query(tree->size(), 0), std::invalid_argument);
+                }
+            }
+        }
 }
