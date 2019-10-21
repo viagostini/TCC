@@ -21,21 +21,21 @@ TEST_CASE ("PreOrder", "[preorder]") {
 
         SECTION ("Has a query function") {
             // TODO: maybe test all possible queries?
-            CHECK(preorder->query(0,0) == 0);
-            CHECK(preorder->query(1,0) == 0);
-            CHECK(preorder->query(2,0) == 0);
-            CHECK(preorder->query(2,1) == 2);
-            CHECK(preorder->query(3,0) == 0);
-            CHECK(preorder->query(3,1) == 3);
-            CHECK(preorder->query(4,0) == 0);
-            CHECK(preorder->query(4,1) == 2);
-            CHECK(preorder->query(4,2) == 4);
-            CHECK(preorder->query(5,0) == 0);
-            CHECK(preorder->query(5,1) == 2);
-            CHECK(preorder->query(5,2) == 5);
-            CHECK(preorder->query(6,0) == 0);
-            CHECK(preorder->query(6,1) == 3);
-            CHECK(preorder->query(6,2) == 6);
+            REQUIRE(preorder->query(0,0) == 0);
+            REQUIRE(preorder->query(1,0) == 0);
+            REQUIRE(preorder->query(2,0) == 0);
+            REQUIRE(preorder->query(2,1) == 2);
+            REQUIRE(preorder->query(3,0) == 0);
+            REQUIRE(preorder->query(3,1) == 3);
+            REQUIRE(preorder->query(4,0) == 0);
+            REQUIRE(preorder->query(4,1) == 2);
+            REQUIRE(preorder->query(4,2) == 4);
+            REQUIRE(preorder->query(5,0) == 0);
+            REQUIRE(preorder->query(5,1) == 2);
+            REQUIRE(preorder->query(5,2) == 5);
+            REQUIRE(preorder->query(6,0) == 0);
+            REQUIRE(preorder->query(6,1) == 3);
+            REQUIRE(preorder->query(6,2) == 6);
 
             SECTION ("Query function returns -1 if there is no answer") {
                 REQUIRE(preorder->query(1, tree->size()) == -1);

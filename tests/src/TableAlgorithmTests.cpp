@@ -24,9 +24,21 @@ TEST_CASE ("Table algorithm", "[table]") {
         TableAlgorithm *table = new TableAlgorithm(tree);
 
         SECTION("Has a query function") {
-            // TODO: maybe test all possible queries?
+            REQUIRE(table->query(0,0) == 0);
+            REQUIRE(table->query(1,0) == 0);
+            REQUIRE(table->query(2,0) == 0);
+            REQUIRE(table->query(2,1) == 2);
+            REQUIRE(table->query(3,0) == 0);
+            REQUIRE(table->query(3,1) == 3);
+            REQUIRE(table->query(4,0) == 0);
             REQUIRE(table->query(4,1) == 2);
+            REQUIRE(table->query(4,2) == 4);
+            REQUIRE(table->query(5,0) == 0);
+            REQUIRE(table->query(5,1) == 2);
+            REQUIRE(table->query(5,2) == 5);
+            REQUIRE(table->query(6,0) == 0);
             REQUIRE(table->query(6,1) == 3);
+            REQUIRE(table->query(6,2) == 6);
 
             SECTION ("Query function returns -1 if there is no answer")
                 REQUIRE(table->query(1, tree->size()) == -1);
