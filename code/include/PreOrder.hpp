@@ -2,10 +2,14 @@
 #define PREORDER_H
 
 #include <vector>
+#include <iostream>
 #include <algorithm>
 #include <stdexcept>
 #include "../include/Tree.hpp"
 
+using std::cout;
+using std::endl;
+using std::prev;
 using std::vector;
 using std::upper_bound;
 

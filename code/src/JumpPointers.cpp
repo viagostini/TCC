@@ -1,10 +1,5 @@
 #include "../include/JumpPointers.hpp"
 
-#include <iostream>
-
-using std::cout;
-using std::endl;
-
 JumpPointerLA::JumpPointerLA (const Tree* tree) {
     tree_ = tree;
     resize_tables();

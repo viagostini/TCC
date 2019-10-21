@@ -1,10 +1,15 @@
 #ifndef TABLE_H
 #define TABLE_H
 
+#include <cmath>
 #include <vector>
+#include <iostream>
 #include <stdexcept>
 #include "../include/Tree.hpp"
 
+using std::endl;
+using std::cout;
+using std::max;
 using std::vector;
 
 class TableAlgorithm {

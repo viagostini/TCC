@@ -1,9 +1,4 @@
 #include "../include/PreOrder.hpp"
-#include <iostream>
-
-using std::cout;
-using std::endl;
-using std::prev;
 
 PreOrder::PreOrder (const Tree* tree) {
     tree_ = tree;

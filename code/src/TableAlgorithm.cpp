@@ -1,12 +1,5 @@
 #include "../include/TableAlgorithm.hpp"
 
-#include <iostream>
-#include <cmath>
-
-using std::endl;
-using std::cout;
-using std::max;
-
 TableAlgorithm::TableAlgorithm (const Tree* tree) {
     tree_ = tree;
     resize_table();

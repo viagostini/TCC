@@ -7,6 +7,8 @@
 #include <iostream>
 #include "../include/Tree.hpp"
 
+using std::cout;
+using std::endl;
 using std::vector;
 
 class JumpPointerLA {
