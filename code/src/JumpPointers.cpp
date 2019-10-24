@@ -3,16 +3,7 @@
 JumpPointerLA::JumpPointerLA (const Tree* tree) {
     tree_ = tree;
     resize_tables();
-    seen.resize(tree->size());
-    for (int i = 0; i < tree->size(); i++)
-        seen[i] = 0;
     set_jump_table();
-    /*for (int i = 0; i < tree_->size(); i++) {
-        for (int j = 0; j <= max_jumps; j++) {
-            cout << jmp_[i][j] << "  ";
-        }
-        cout << endl << endl;
-    }*/
 }
 
 int JumpPointerLA::query1 (int node, int depth) {

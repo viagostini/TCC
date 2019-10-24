@@ -2,11 +2,13 @@
 #define TREE_H
 
 #include <vector>
+#include <stack>
 #include <utility>
 #include <stdexcept>
 #include "Edge.hpp"
 #include "Node.hpp"
 
+using std::stack;
 using std::pair;
 using std::vector;
 using std::make_pair;

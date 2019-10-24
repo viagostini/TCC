@@ -31,10 +31,18 @@ int Tree::parent (int u) const {
 }
 
 void Tree::dfs (Node *node, int depth) {
-    depth_[node->label] = depth;
-    for (Node *child : node->children) {
-        parent_[child->label] = node->label;
-        dfs(child, depth + 1);
+    stack<pair<Node*, int>> stack;
+    stack.push(make_pair(node, depth));
+    while (!stack.empty()) {
+        auto s = stack.top();
+        stack.pop();
+        node = s.first;
+        depth = s.second;
+        depth_[node->label] = depth;
+        for (Node *child : node->children) {
+            parent_[child->label] = node->label;
+            stack.push(make_pair(child, depth+1));
+        }
     }
 }
 

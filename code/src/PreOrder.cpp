@@ -31,14 +31,20 @@ int PreOrder::query (int node, int depth) const {
 }
 
 void PreOrder::dfs (Node *node, int depth, int& id) {
-    if (traversal_.size() <= depth)
-        traversal_.push_back(vector<int>());
+    stack<tuple<Node*, int>> stack;
+    stack.push(make_tuple(node, depth));
+    while (!stack.empty()) {
+        std::tie(node, depth) = stack.top();
+        stack.pop();
+        if (traversal_.size() <= depth)
+            traversal_.push_back(vector<int>());
 
-    x[node->label] = id;
-    y[id] = node->label;
+        x[node->label] = id;
+        y[id] = node->label;
 
-    traversal_[depth].push_back(id++);
-   
-    for (Node *child : node->children)
-        dfs(child, depth + 1, id);
+        traversal_[depth].push_back(id++);
+    
+        for (Node *child : node->children)
+            stack.push(make_tuple(child, depth+1));
+    }
 }

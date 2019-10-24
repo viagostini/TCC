@@ -2,6 +2,7 @@
 #define PREORDER_H
 
 #include <vector>
+#include <tuple>
 #include <iostream>
 #include <algorithm>
 #include <stdexcept>
@@ -10,7 +11,9 @@
 using std::cout;
 using std::endl;
 using std::prev;
+using std::tuple;
 using std::vector;
+using std::make_tuple;
 using std::upper_bound;
 
 class PreOrder {

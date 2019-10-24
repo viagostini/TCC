@@ -23,7 +23,6 @@ class JumpPointerLA {
 
     public:
     JumpPointerLA (const Tree* tree);
-    vector<int> seen;
     int query1 (int u, int d);
     int query2 (int u, int d);
 };
