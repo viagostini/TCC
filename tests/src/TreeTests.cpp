@@ -45,7 +45,7 @@ TEST_CASE ("Tree", "[tree]") {
         }
     }
     SECTION ("Linear Tree") {
-        int n = 25;
+        int n = 15;
         vector<Node*> nodes;
         build_balanced_kary_tree(n, 1, nodes);
         Tree *tree = new Tree(nodes.size(), nodes[0]);
@@ -68,6 +68,42 @@ TEST_CASE ("Tree", "[tree]") {
             for (int i = 0; i < n; i++)
                 REQUIRE(tree->depth(i) == i);
 
+            SECTION ("Depth function throws when node is invalid") {
+                REQUIRE_THROWS_AS(tree->depth(-1), std::invalid_argument);
+                REQUIRE_THROWS_AS(tree->depth(tree->size()), std::invalid_argument);
+            }
+        }
+    }
+    SECTION ("Binary Tree") {
+        int n = 9;
+        vector<Node*> nodes;
+        build_balanced_kary_tree(n, 2, nodes);
+        Tree *tree = new Tree(nodes.size(), nodes[0]);
+        
+        SECTION ("Tree has a size")
+            REQUIRE(tree->size() == n);
+
+        SECTION ("Tree has parent function") {
+            for (int i = 0; i < tree->size(); i++)
+                REQUIRE(tree->parent(i) == (i-1) / 2);
+
+            SECTION ("Parent function throws when node is invalid") {
+                REQUIRE_THROWS_AS(tree->parent(-1), std::invalid_argument);
+                REQUIRE_THROWS_AS(tree->parent(tree->size()), std::invalid_argument);
+            }
+        }
+
+        SECTION ("Tree has depth function") {
+            REQUIRE(tree->depth(0) == 0);
+            REQUIRE(tree->depth(1) == 1);
+            REQUIRE(tree->depth(2) == 1);
+            REQUIRE(tree->depth(3) == 2);
+            REQUIRE(tree->depth(4) == 2);
+            REQUIRE(tree->depth(5) == 2);
+            REQUIRE(tree->depth(6) == 2);
+            REQUIRE(tree->depth(7) == 3);
+            REQUIRE(tree->depth(8) == 3);
+            
             SECTION ("Depth function throws when node is invalid") {
                 REQUIRE_THROWS_AS(tree->depth(-1), std::invalid_argument);
                 REQUIRE_THROWS_AS(tree->depth(tree->size()), std::invalid_argument);

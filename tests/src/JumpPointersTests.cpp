@@ -57,7 +57,7 @@ TEST_CASE ("Jump Pointers", "[jump]") {
     }
 
     SECTION ("Linear Tree") {
-        int n = 3;
+        int n = 15;
         vector<Node*> nodes;
         build_balanced_kary_tree(n, 1, nodes);
         Tree *tree = new Tree(nodes.size(), nodes[0]);
@@ -69,6 +69,58 @@ TEST_CASE ("Jump Pointers", "[jump]") {
                     REQUIRE(jump->query2(i, j) == j);
                 }
             }
+
+            SECTION ("Query function returns -1 if there is no answer") {
+                REQUIRE(jump->query2(1, tree->size()) == -1);
+                REQUIRE(jump->query2(1, tree->size()) == -1);
+            }
+
+            SECTION ("Query function throws if negative depth") {
+                REQUIRE_THROWS_AS(jump->query1(1, -1), std::invalid_argument);
+                REQUIRE_THROWS_AS(jump->query2(1, -1), std::invalid_argument);
+            }
+
+            SECTION ("Query function throws if invalid node") {
+                REQUIRE_THROWS_AS(jump->query1(-1, 0), std::invalid_argument);
+                REQUIRE_THROWS_AS(jump->query1(tree->size(), 0), std::invalid_argument);
+                REQUIRE_THROWS_AS(jump->query2(-1, 0), std::invalid_argument);
+                REQUIRE_THROWS_AS(jump->query2(tree->size(), 0), std::invalid_argument);
+            }
+        }
+    }
+    SECTION ("Binary Tree") {
+        int n = 9;
+        vector<Node*> nodes;
+        build_balanced_kary_tree(n, 2, nodes);
+        Tree *tree = new Tree(nodes.size(), nodes[0]);
+        JumpPointerLA *jump = new JumpPointerLA(tree);
+
+        SECTION ("Has a query function") {
+            REQUIRE(jump->query2(0, 0) == 0);
+            REQUIRE(jump->query2(1, 0) == 0);
+            REQUIRE(jump->query2(1, 1) == 1);
+            REQUIRE(jump->query2(2, 0) == 0);
+            REQUIRE(jump->query2(2, 1) == 2);
+            REQUIRE(jump->query2(3, 0) == 0);
+            REQUIRE(jump->query2(3, 1) == 1);
+            REQUIRE(jump->query2(3, 2) == 3);
+            REQUIRE(jump->query2(4, 0) == 0);
+            REQUIRE(jump->query2(4, 1) == 1);
+            REQUIRE(jump->query2(4, 2) == 4);
+            REQUIRE(jump->query2(5, 0) == 0);
+            REQUIRE(jump->query2(5, 1) == 2);
+            REQUIRE(jump->query2(5, 2) == 5);
+            REQUIRE(jump->query2(6, 0) == 0);
+            REQUIRE(jump->query2(6, 1) == 2);
+            REQUIRE(jump->query2(6, 2) == 6);
+            REQUIRE(jump->query2(7, 0) == 0);
+            REQUIRE(jump->query2(7, 1) == 1);
+            REQUIRE(jump->query2(7, 2) == 3);
+            REQUIRE(jump->query2(7, 3) == 7);
+            REQUIRE(jump->query2(8, 0) == 0);
+            REQUIRE(jump->query2(8, 1) == 1);
+            REQUIRE(jump->query2(8, 2) == 3);
+            REQUIRE(jump->query2(8, 3) == 8);
 
             SECTION ("Query function returns -1 if there is no answer") {
                 REQUIRE(jump->query2(1, tree->size()) == -1);
