@@ -11,7 +11,7 @@ using std::cout;
 using std::endl;
 using std::vector;
 
-class JumpPointerLA {
+class JumpPointers {
     private:
     int max_jumps;
     const Tree* tree_;
@@ -22,9 +22,8 @@ class JumpPointerLA {
     int get_msb (int x);
 
     public:
-    JumpPointerLA (const Tree* tree);
-    int query1 (int u, int d);
-    int query2 (int u, int d);
+    JumpPointers (const Tree* tree);
+    int query (int u, int d);
 };
 
 #endif // JUMP_H

@@ -17,40 +17,36 @@ TEST_CASE ("Jump Pointers", "[jump]") {
         }
 
         Tree *tree = new Tree(default_tree.size, nodes[0]);
-        JumpPointerLA *jump = new JumpPointerLA(tree);
+        JumpPointers *jump = new JumpPointers(tree);
 
         SECTION ("Has a query function") {
-            REQUIRE(jump->query2(0,0) == 0);
-            REQUIRE(jump->query2(1,0) == 0);
-            REQUIRE(jump->query2(2,0) == 0);
-            REQUIRE(jump->query2(2,1) == 2);
-            REQUIRE(jump->query2(3,0) == 0);
-            REQUIRE(jump->query2(3,1) == 3);
-            REQUIRE(jump->query2(4,0) == 0);
-            REQUIRE(jump->query2(4,1) == 2);
-            REQUIRE(jump->query2(4,2) == 4);
-            REQUIRE(jump->query2(5,0) == 0);
-            REQUIRE(jump->query2(5,1) == 2);
-            REQUIRE(jump->query2(5,2) == 5);
-            REQUIRE(jump->query2(6,0) == 0);
-            REQUIRE(jump->query2(6,1) == 3);
-            REQUIRE(jump->query2(6,2) == 6);
+            REQUIRE(jump->query(0,0) == 0);
+            REQUIRE(jump->query(1,0) == 0);
+            REQUIRE(jump->query(2,0) == 0);
+            REQUIRE(jump->query(2,1) == 2);
+            REQUIRE(jump->query(3,0) == 0);
+            REQUIRE(jump->query(3,1) == 3);
+            REQUIRE(jump->query(4,0) == 0);
+            REQUIRE(jump->query(4,1) == 2);
+            REQUIRE(jump->query(4,2) == 4);
+            REQUIRE(jump->query(5,0) == 0);
+            REQUIRE(jump->query(5,1) == 2);
+            REQUIRE(jump->query(5,2) == 5);
+            REQUIRE(jump->query(6,0) == 0);
+            REQUIRE(jump->query(6,1) == 3);
+            REQUIRE(jump->query(6,2) == 6);
 
             SECTION ("Query function returns -1 if there is no answer") {
-                REQUIRE(jump->query2(1, tree->size()) == -1);
-                REQUIRE(jump->query2(1, tree->size()) == -1);
+                REQUIRE(jump->query(1, tree->size()) == -1);
             }
 
             SECTION ("Query function throws if negative depth") {
-                REQUIRE_THROWS_AS(jump->query1(1, -1), std::invalid_argument);
-                REQUIRE_THROWS_AS(jump->query2(1, -1), std::invalid_argument);
+                REQUIRE_THROWS_AS(jump->query(1, -1), std::invalid_argument);
             }
 
             SECTION ("Query function throws if invalid node") {
-                REQUIRE_THROWS_AS(jump->query1(-1, 0), std::invalid_argument);
-                REQUIRE_THROWS_AS(jump->query1(tree->size(), 0), std::invalid_argument);
-                REQUIRE_THROWS_AS(jump->query2(-1, 0), std::invalid_argument);
-                REQUIRE_THROWS_AS(jump->query2(tree->size(), 0), std::invalid_argument);
+                REQUIRE_THROWS_AS(jump->query(-1, 0), std::invalid_argument);
+                REQUIRE_THROWS_AS(jump->query(tree->size(), 0), std::invalid_argument);
             }
         }
 
@@ -61,30 +57,26 @@ TEST_CASE ("Jump Pointers", "[jump]") {
         vector<Node*> nodes;
         build_balanced_kary_tree(n, 1, nodes);
         Tree *tree = new Tree(nodes.size(), nodes[0]);
-        JumpPointerLA *jump = new JumpPointerLA(tree);
+        JumpPointers *jump = new JumpPointers(tree);
 
         SECTION ("Has a query function") {
             for (int i = 0; i < n; i++) {
                 for (int j = tree->depth(i); j >= 0; j--) {
-                    REQUIRE(jump->query2(i, j) == j);
+                    REQUIRE(jump->query(i, j) == j);
                 }
             }
 
             SECTION ("Query function returns -1 if there is no answer") {
-                REQUIRE(jump->query2(1, tree->size()) == -1);
-                REQUIRE(jump->query2(1, tree->size()) == -1);
+                REQUIRE(jump->query(1, tree->size()) == -1);
             }
 
             SECTION ("Query function throws if negative depth") {
-                REQUIRE_THROWS_AS(jump->query1(1, -1), std::invalid_argument);
-                REQUIRE_THROWS_AS(jump->query2(1, -1), std::invalid_argument);
+                REQUIRE_THROWS_AS(jump->query(1, -1), std::invalid_argument);
             }
 
             SECTION ("Query function throws if invalid node") {
-                REQUIRE_THROWS_AS(jump->query1(-1, 0), std::invalid_argument);
-                REQUIRE_THROWS_AS(jump->query1(tree->size(), 0), std::invalid_argument);
-                REQUIRE_THROWS_AS(jump->query2(-1, 0), std::invalid_argument);
-                REQUIRE_THROWS_AS(jump->query2(tree->size(), 0), std::invalid_argument);
+                REQUIRE_THROWS_AS(jump->query(-1, 0), std::invalid_argument);
+                REQUIRE_THROWS_AS(jump->query(tree->size(), 0), std::invalid_argument);
             }
         }
     }
@@ -94,30 +86,26 @@ TEST_CASE ("Jump Pointers", "[jump]") {
         vector<Node*> nodes;
         build_balanced_kary_tree(n, 2, nodes);
         Tree *tree = new Tree(nodes.size(), nodes[0]);
-        JumpPointerLA *jump = new JumpPointerLA(tree);
+        JumpPointers *jump = new JumpPointers(tree);
 
         SECTION ("Has a query function") {
             for (int node = 0; node < n; node++) {
                 for (int depth = 0; depth <= tree->depth(node); depth++) {
-                    REQUIRE(jump->query2(node, depth) == naive_check(tree, node, depth));
+                    REQUIRE(jump->query(node, depth) == naive_check(tree, node, depth));
                 }
             }
 
             SECTION ("Query function returns -1 if there is no answer") {
-                REQUIRE(jump->query2(1, tree->size()) == -1);
-                REQUIRE(jump->query2(1, tree->size()) == -1);
+                REQUIRE(jump->query(1, tree->size()) == -1);
             }
 
             SECTION ("Query function throws if negative depth") {
-                REQUIRE_THROWS_AS(jump->query1(1, -1), std::invalid_argument);
-                REQUIRE_THROWS_AS(jump->query2(1, -1), std::invalid_argument);
+                REQUIRE_THROWS_AS(jump->query(1, -1), std::invalid_argument);
             }
 
             SECTION ("Query function throws if invalid node") {
-                REQUIRE_THROWS_AS(jump->query1(-1, 0), std::invalid_argument);
-                REQUIRE_THROWS_AS(jump->query1(tree->size(), 0), std::invalid_argument);
-                REQUIRE_THROWS_AS(jump->query2(-1, 0), std::invalid_argument);
-                REQUIRE_THROWS_AS(jump->query2(tree->size(), 0), std::invalid_argument);
+                REQUIRE_THROWS_AS(jump->query(-1, 0), std::invalid_argument);
+                REQUIRE_THROWS_AS(jump->query(tree->size(), 0), std::invalid_argument);
             }
         }
     }
@@ -127,30 +115,26 @@ TEST_CASE ("Jump Pointers", "[jump]") {
         vector<Node*> nodes;
         build_balanced_kary_tree(n, 4, nodes);
         Tree *tree = new Tree(nodes.size(), nodes[0]);
-        JumpPointerLA *jump = new JumpPointerLA(tree);
+        JumpPointers *jump = new JumpPointers(tree);
 
         SECTION ("Has a query function") {
             for (int node = 0; node < n; node++) {
                 for (int depth = 0; depth <= tree->depth(node); depth++) {
-                    REQUIRE(jump->query2(node, depth) == naive_check(tree, node, depth));
+                    REQUIRE(jump->query(node, depth) == naive_check(tree, node, depth));
                 }
             }
 
             SECTION ("Query function returns -1 if there is no answer") {
-                REQUIRE(jump->query2(1, tree->size()) == -1);
-                REQUIRE(jump->query2(1, tree->size()) == -1);
+                REQUIRE(jump->query(1, tree->size()) == -1);
             }
 
             SECTION ("Query function throws if negative depth") {
-                REQUIRE_THROWS_AS(jump->query1(1, -1), std::invalid_argument);
-                REQUIRE_THROWS_AS(jump->query2(1, -1), std::invalid_argument);
+                REQUIRE_THROWS_AS(jump->query(1, -1), std::invalid_argument);
             }
 
             SECTION ("Query function throws if invalid node") {
-                REQUIRE_THROWS_AS(jump->query1(-1, 0), std::invalid_argument);
-                REQUIRE_THROWS_AS(jump->query1(tree->size(), 0), std::invalid_argument);
-                REQUIRE_THROWS_AS(jump->query2(-1, 0), std::invalid_argument);
-                REQUIRE_THROWS_AS(jump->query2(tree->size(), 0), std::invalid_argument);
+                REQUIRE_THROWS_AS(jump->query(-1, 0), std::invalid_argument);
+                REQUIRE_THROWS_AS(jump->query(tree->size(), 0), std::invalid_argument);
             }
         }
     }
