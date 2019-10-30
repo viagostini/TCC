@@ -82,39 +82,18 @@ TEST_CASE ("Table algorithm", "[table]") {
         }
     }
     SECTION ("Binary Tree") {
-        int n = 9;
+        int n = 2178;
         vector<Node*> nodes;
         build_balanced_kary_tree(n, 2, nodes);
         Tree *tree = new Tree(nodes.size(), nodes[0]);
         TableAlgorithm *table = new TableAlgorithm(tree);
 
         SECTION ("Has a query function") {
-            REQUIRE(table->query(0, 0) == 0);
-            REQUIRE(table->query(1, 0) == 0);
-            REQUIRE(table->query(1, 1) == 1);
-            REQUIRE(table->query(2, 0) == 0);
-            REQUIRE(table->query(2, 1) == 2);
-            REQUIRE(table->query(3, 0) == 0);
-            REQUIRE(table->query(3, 1) == 1);
-            REQUIRE(table->query(3, 2) == 3);
-            REQUIRE(table->query(4, 0) == 0);
-            REQUIRE(table->query(4, 1) == 1);
-            REQUIRE(table->query(4, 2) == 4);
-            REQUIRE(table->query(5, 0) == 0);
-            REQUIRE(table->query(5, 1) == 2);
-            REQUIRE(table->query(5, 2) == 5);
-            REQUIRE(table->query(6, 0) == 0);
-            REQUIRE(table->query(6, 1) == 2);
-            REQUIRE(table->query(6, 2) == 6);
-            REQUIRE(table->query(7, 0) == 0);
-            REQUIRE(table->query(7, 1) == 1);
-            REQUIRE(table->query(7, 2) == 3);
-            REQUIRE(table->query(7, 3) == 7);
-            REQUIRE(table->query(8, 0) == 0);
-            REQUIRE(table->query(8, 1) == 1);
-            REQUIRE(table->query(8, 2) == 3);
-            REQUIRE(table->query(8, 3) == 8);
-
+            for (int node = 0; node < n; node++) {
+                for (int depth = 0; depth <= tree->depth(node); depth++) {
+                    REQUIRE(table->query(node, depth) == naive_check(tree, node, depth));
+                }
+            }
             SECTION ("Query function returns -1 if there is no answer") {
                 REQUIRE(table->query(1, tree->size()) == -1);
                 REQUIRE(table->query(1, tree->size()) == -1);
@@ -130,4 +109,33 @@ TEST_CASE ("Table algorithm", "[table]") {
             }
         }
     }
+    SECTION ("4-ary Tree") {
+        int n = 2178;
+        vector<Node*> nodes;
+        build_balanced_kary_tree(n, 4, nodes);
+        Tree *tree = new Tree(nodes.size(), nodes[0]);
+        TableAlgorithm *table = new TableAlgorithm(tree);
+
+        SECTION ("Has a query function") {
+            for (int node = 0; node < n; node++) {
+                for (int depth = 0; depth <= tree->depth(node); depth++) {
+                    REQUIRE(table->query(node, depth) == naive_check(tree, node, depth));
+                }
+            }
+            SECTION ("Query function returns -1 if there is no answer") {
+                REQUIRE(table->query(1, tree->size()) == -1);
+                REQUIRE(table->query(1, tree->size()) == -1);
+            }
+
+            SECTION ("Query function throws if negative depth") {
+                REQUIRE_THROWS_AS(table->query(1, -1), std::invalid_argument);
+            }
+
+            SECTION ("Query function throws if invalid node") {
+                REQUIRE_THROWS_AS(table->query(-1, 0), std::invalid_argument);
+                REQUIRE_THROWS_AS(table->query(tree->size(), 0), std::invalid_argument);
+            }
+        }
+    }
+
 }

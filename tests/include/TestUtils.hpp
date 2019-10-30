@@ -3,6 +3,8 @@
 
 using std::vector;
 
+int naive_check (Tree *tree, int node, int depth);
+
 struct EmptyTree {
     int size = 0;
     vector<Edge> edges = {};
