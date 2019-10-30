@@ -1,7 +1,6 @@
 #!/bin/bash
 
 N=(150000 300000 600000 1200000 2400000 4800000 7200000 9600000 10800000 14400000 19200000 21600000)
-M=(19200000)
 
 ALGO=$1
 K=$2
@@ -19,7 +18,7 @@ fi
 for n in ${N[@]}
 do
     echo $n
-    FILE="results/${ALGO}_${TREE}_${n}_${TYPE}.txt"
+    FILE="results/a_${ALGO}_${TREE}_${n}_${TYPE}.txt"
     touch $FILE
     for ((i=1; i<=10; i++))
     do
