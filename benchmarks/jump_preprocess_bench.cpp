@@ -17,7 +17,7 @@ int main (int args, char* argv[]) {
     Tree *tree = new Tree(nodes.size(), nodes[0]);
 
     auto t1 = chrono::steady_clock::now();
-    JumpPointerLA *jump = new JumpPointerLA(tree);
+    JumpPointers *jump = new JumpPointers(tree);
     auto t2 = chrono::steady_clock::now();
     
     auto dt = chrono::duration_cast<chrono::nanoseconds>(t2 - t1).count();

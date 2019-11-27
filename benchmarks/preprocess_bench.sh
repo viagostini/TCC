@@ -18,7 +18,7 @@ fi
 for n in ${N[@]}
 do
     echo $n
-    FILE="results/a_${ALGO}_${TREE}_${n}_${TYPE}.txt"
+    FILE="results/${ALGO}_${TREE}_${n}_${TYPE}"
     touch $FILE
     for ((i=1; i<=10; i++))
     do
