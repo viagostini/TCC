@@ -1,10 +1,10 @@
-function query(u, d)
-    x := u
-    if d > depth(x) or d < 0
-        return -1 // Não há resposta.
-    end
-    while depth(x) != d
-        x := parent(x)
-    end
-    return x
-end
+funcao consulta(nó, prof)
+    x := nó
+    se prof > profundidade(x) ou prof < 0
+        devolva -1 // Não há resposta.
+    fim
+    enquanto profundidade(x) != prof
+        x := pai(x)
+    fim
+    devolva x
+fim
