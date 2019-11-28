@@ -25,11 +25,11 @@ pair<int,int> random_query() {
 int main (int args, char* argv[]) {
     n = atoi(argv[1]);
     k = atoi(argv[2]);
-    int m = 100000000;
+    int m = 10000000;
     
     string path = "input/";
     if (k == 1) 
-        path.append("linear/query_linear_smaller_");
+        path.append("linear/query_linear_");
     else if (k == 2)
         path.append("binary/query_binary_");
     else if (k == 4)
