@@ -4,6 +4,7 @@
 #include <vector>
 #include <stack>
 #include <utility>
+#include <algorithm>
 #include <stdexcept>
 #include "Edge.hpp"
 #include "Node.hpp"
@@ -12,6 +13,7 @@ using std::stack;
 using std::pair;
 using std::vector;
 using std::make_pair;
+using std::max_element;
 
 class Tree {
     private:
@@ -23,6 +25,7 @@ class Tree {
     Tree (int size, const Node *tree_root);
     const Node *root;
     int size () const;
+    int depth () const;
     int depth (int u) const;
     int parent (int u) const;
     void dfs (Node *node, int depth);

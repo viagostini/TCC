@@ -26,10 +26,9 @@ int JumpPointers::get_msb (int x) {
 }
 
 void JumpPointers::resize_tables() {
-    int size = tree_->size();
-    depth_.resize(size);
+    int size = tree_->depth();
     max_jumps = ceil(log2(size));
-    jmp_.assign(size, vector<int>(max_jumps + 1));
+    jmp_.assign(tree_->size(), vector<int>(max_jumps + 1));
 }
 
 void JumpPointers::set_jump_table() {

@@ -4,6 +4,7 @@
 #include <vector>
 #include <math.h>
 #include <stdexcept>
+#include <algorithm>
 #include <iostream>
 #include "../include/Tree.hpp"
 
@@ -15,7 +16,6 @@ class JumpPointers {
     private:
     int max_jumps;
     const Tree* tree_;
-    vector<int> depth_;
     vector<vector<int>> jmp_;
     void resize_tables();
     void set_jump_table();

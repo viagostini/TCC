@@ -14,6 +14,10 @@ int Tree::size () const {
     return size_;
 }
 
+int Tree::depth () const {
+    return *max_element(depth_.begin(), depth_.end());
+}
+
 int Tree::depth (int u) const {
     if (u >= size_)
         throw std::invalid_argument("invalid node label!");
