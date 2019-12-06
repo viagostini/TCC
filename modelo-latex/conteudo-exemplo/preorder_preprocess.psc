@@ -1,7 +1,7 @@
 global id = 0
 
 rotina preprocessa(árvore)
-    dfs(árvore.raíz, prof = 0)
+    dfs(árvore.raiz, prof = 0)
 fim
 
 rotina dfs(nó, prof)

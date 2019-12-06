@@ -237,18 +237,18 @@
 % de cada um deles.
 
 %%%% Apêndices %%%%
-%\makeatletter
-%\if@openright\cleardoublepage\else\clearpage\fi
-%\makeatother
+\makeatletter
+\if@openright\cleardoublepage\else\clearpage\fi
+\makeatother
 
 % Este formato está definido na package imeusp-headers.
-%\pagestyle{appendix}
+\pagestyle{appendix}
 
-%\appendix
+\appendix
 
-%\input{conteudo-exemplo/apendices}
+\input{conteudo-exemplo/apendices}
 %\input{conteudo/apendices}
-%\par
+\par
 
 %%%% Anexos %%%%
 % \makeatletter
@@ -289,6 +289,7 @@
 
 %%%%%%%% Bibliografia com biblatex (preferido): %%%%%%%%
 
+\nocite{*}
 \printbibliography[
   title=\refname\label{bibliografia}, % "Referências", recomendado pela ABNT
   %title=\bibname\label{bibliografia}, % "Bibliografia"
@@ -297,6 +298,6 @@
 ]
 
 % imprime o índice remissivo no documento (opcional)
-\printindex
+%\printindex
 
 \end{document}

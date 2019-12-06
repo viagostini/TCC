@@ -1,9 +1,8 @@
 funcao cria_arvore(N, nó)
-    raíz := nó
-    tamanho := N
+    raiz := nó
     pai := vetor de tamanho N
     profundidade := vetor de tamanho N
-    travessia(raíz, 0)
+    travessia(raiz, 0)
 fim
 
 rotina travessia(nó, prof)

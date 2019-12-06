@@ -1,0 +1,37 @@
+%!TeX root=../tese.tex
+%("dica" para o editor de texto: este arquivo é parte de um documento maior)
+% para saber mais: https://tex.stackexchange.com/q/78101/183146
+
+\chapter{Testes de unidade com a biblioteca Catch2}
+\label{ap:pseudocode}
+
+Para garantir a corretude dos algoritmos implementados neste trabalho, já estava
+decidido desde o início a utilizar alguma ferramenta para realizar testes que pudessem
+facilmente identificar erros nas implementações ao longo do ano. Depois de pesquisar
+bastante optei por utilizar a biblioteca \textbf{Catch2} por ser \textit{header-only}
+e facilitar o processo de rodar em outras máquinas sem precisar instalar nada.
+A sintaxe do \textit{framework} fornecido pela biblioteca é bem organizada e foi
+de fácil utilização. No programa ~\ref{prog:tabletest} consta uma parte do código
+real dos testes do Algoritmo da Tabela, exemplificando quão simples é escrever testes
+de unidade bem separados por classe e tipo de teste, podendo criar diversos casos de
+teste, cada um com um \textit{setup} diferente de variáveis e objetos.
+
+Para este estudo, cada algoritmo teve seus testes encapsulados dentro de casos de teste
+(\texttt{TEST\_CASE}) enquanto cada tipo de teste dentro de cada algoritmo (árvores lineares, binárias
+e quaternárias) foram colocados dentro de suas próprias seções (\texttt{SECTION}). As asserções, que
+fazem o papel de garantir que algo realmente vale é feito através das macros
+\texttt{REQUIRE}, que checa igualdade entre dois valores e \texttt{REQUIRE\_THROW\_AS},
+que verifica se uma função levantou a exceção que era esperada.
+
+\begin{program}[H]
+      \lstinputlisting[
+        language=c++,
+        style=pseudocode,
+        style=wider,
+        functions={TableAlgorithm, build_balanced_kary_tree, Tree},
+        specialidentifiers={TEST_CASE, SECTION, REQUIRE, REQUIRE_THROWS_AS},
+      ]
+      {conteudo-exemplo/catch2-1.cpp}
+    
+      \caption{Parte dos testes para o Algoritmo da Tabela.\label{prog:tabletest}}
+    \end{program}

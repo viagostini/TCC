@@ -1,4 +1,4 @@
 funcao consulta(nó, prof)
-    idx := travessia[prof].upper_bound(preordem[nó])
+    idx := travessia[prof].busca_binaria(preordem[nó])
     devolva nome[idx]
 fim

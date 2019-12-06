@@ -6,37 +6,40 @@
 % automaticamente a referência para o próprio documento, conforme as normas
 % sugeridas da USP
 \begin{resumo}{port}
-Elemento obrigatório, constituído de uma sequência de frases concisas e
-objetivas, em forma de texto.  Deve apresentar os objetivos, métodos empregados,
-resultados e conclusões.  O resumo deve ser redigido em parágrafo único, conter
-no máximo 500 palavras e ser seguido dos termos representativos do conteúdo do
-trabalho (palavras-chave). Deve ser precedido da referência do documento.
-Texto texto texto texto texto texto texto texto texto texto texto texto texto
-texto texto texto texto texto texto texto texto texto texto texto texto texto
-texto texto texto texto texto texto texto texto texto texto texto texto texto
-texto texto texto texto texto texto texto texto texto texto texto texto texto
-texto texto texto texto texto texto texto texto texto texto texto texto texto
-texto texto texto texto texto texto texto texto.
-Texto texto texto texto texto texto texto texto texto texto texto texto texto
-texto texto texto texto texto texto texto texto texto texto texto texto texto
-texto texto texto texto texto texto texto texto texto texto texto texto texto
-texto texto texto texto texto texto texto texto texto texto texto texto texto
-texto texto.
+O problema do Ancestral de Nível consiste em preprocessar uma árvore enraizada
+$T$ para então responder consultas AN$(u,d)$, que pedem o ancestral do nó $u$ com
+profundidade $d$. Vários algoritmos com diferentes complexidades já foram propostos,
+porém existem poucos estudos comparativos e implementações disponíveis, principalmente
+em português. Neste trabalho, foram implementados e comparados quatro algoritmos,
+levando em consideração árvores com diferentes formatos para analisar na prática o
+comportamento de cada um conforme o fator de ramificação varia, indo além
+da análise tradicional de complexidade de tempo e espaço no pior caso. Os resultados
+obtidos estão de acordo com o que era esperado pela análise teórica mas além disso,
+foi possível observar que algoritmos simples podem ser implementados de maneiras que,
+dependendo das características da árvore de entrada, pode-se obter performances
+suficientes, o que leva à reforçar o quão importante é conhecer a aplicação em
+questão para poder tomar a melhor decisão quanto a qual algoritmo implementar,
+balanceando questões como uso de memória, dificuldade de implementação e manutenção
+do código e eficiência.
+
 \end{resumo}
 
 % O resumo é obrigatório, em português e inglês. Este comando também gera
 % automaticamente a referência para o próprio documento, conforme as normas
 % sugeridas da USP
 \begin{resumo}{eng}
-Elemento obrigatório, elaborado com as mesmas características do resumo em
-língua portuguesa. De acordo com o Regimento da Pós-Graduação da USP (Artigo
-99), deve ser redigido em inglês para fins de divulgação. É uma boa ideia usar
-o sítio \url{www.grammarly.com} na preparação de textos em inglês.
-Text text text text text text text text text text text text text text text text
-text text text text text text text text text text text text text text text text
-text text text text text text text text text text text text text text text text
-text text text text text text text text text text text text.
-Text text text text text text text text text text text text text text text text
-text text text text text text text text text text text text text text text text
-text text text.
+The Level Ancestor problem consists of preprocessing a rooted tree $T$ to answer
+queries AN$(u,d)$ which requests the ancestor of node $u$ with depth $d$. There
+have been several algorithms with different complexities proposed, however, there are
+few comparative studies and implementations available, especially in portuguese. In
+this study, four algorithms were implemented and tested with trees of varied shape
+to analyse, in practice, each algorithm's behaviour as the branching factor changes,
+going beyond the traditional worst-case time and space complexity analysis. The
+obtained results were in line with what was expected from theoretical analysis, but
+it allowed to observe that simple algorithms can be implemented in such ways that,
+depending on the characteristics of the input tree, it can achieve sufficient
+performance, reinforcing how important it is to know the actual application so that
+an informed decision is made about which algorithm to implement, balancing questions
+such as memory use, difficulty of code implementation and maintainability and it's
+efficiency.
 \end{resumo}

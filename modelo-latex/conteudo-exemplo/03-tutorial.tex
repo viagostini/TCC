@@ -3,6 +3,7 @@
 % para saber mais: https://tex.stackexchange.com/q/78101/183146
 
 % Vamos definir alguns comandos auxiliares para facilitar.
+\newtheorem{theorem}{Teorema}
 
 % "textbackslash" é muito comprido.
 \newcommand{\sla}{\textbackslash}
@@ -38,6 +39,7 @@ preprocessamento quanto o de resposta às consultas.
 }
 
 \begin{figure}[H]
+  \hspace{3cm}
     \begin{tikzpicture}[scale=0.7,
       level distance=1.5cm,
       level 1/.style={sibling distance=6cm},
@@ -54,22 +56,34 @@ preprocessamento quanto o de resposta às consultas.
             child {node [arn_x] {10}}
           }
         }
-        child {node [arn_r] {2}
+        child {node [arn_r] (c) {2}
           child {node [arn_x] {5}
             child {node [arn_x] {11}}
             child {node [arn_x] {12}}
           }
-          child {node [arn_x] {6}
-              child {node [arn_n] {13}}
-              child {node [arn_x] {14}}
+          child {node [arn_x, very thick] (b) {6}
+            child {node [arn_n] (a) {13}}
+            child {node [arn_x] {14}
+              child [grow=right] {node (q) {$\qquad$} edge from parent[draw=none]
+                child [grow=right] {node (q) {} edge from parent[draw=none]
+                  child [grow=up] {node (r) {} edge from parent[draw=none]
+                    child [grow=up] {node (s) {$\boxed{\mathrm{AN}(13,1) = 2}$} edge from parent[draw=none]
+                    }
+                  }
+                }
+              }
+            }
           }
         };
+
+        \draw[very thick] (a) -- (b) -- (c);
     \end{tikzpicture}
     \caption[Exemplo de consulta de Ancestral de Nível]
-    {Exemplo de consulta AN(13, 1) = 2.}
+    {Exemplo de consulta de Ancestral de Nível.}
   \end{figure}
 
   \begin{figure}[H]
+    \hspace{3cm}
     \begin{tikzpicture}[scale=0.7,
         level distance=1.5cm,
         level 1/.style={sibling distance=6cm},
@@ -82,7 +96,7 @@ preprocessamento quanto o de resposta às consultas.
               child {node [arn_x] {8}}
             }
             child {node [arn_r] {4}
-              child {node [arn_n] {9}}
+              child [very thick] {node [arn_n] {9}}
               child {node [arn_x] {10}}
             }
           }
@@ -92,13 +106,22 @@ preprocessamento quanto o de resposta às consultas.
               child {node [arn_x] {12}}
             }
             child {node [arn_x] {6}
-                child {node [arn_x] {13}}
-                child {node [arn_x] {14}}
+              child {node [arn_x] {13}}
+              child {node [arn_x] {14}
+                child [grow=right] {node (q) {$\qquad$} edge from parent[draw=none]
+                  child [grow=right] {node (q) {} edge from parent[draw=none]
+                    child [grow=up] {node (r) {} edge from parent[draw=none]
+                      child [grow=up] {node (s) {$\boxed{\mathrm{AN}(9,2) = 4}$} edge from parent[draw=none]
+                      }
+                    }
+                  }
+                }
+              }
             }
           };
       \end{tikzpicture}
       \caption[Exemplo de consulta de Ancestral de Nível]
-      {Exemplo de consulta AN(9, 2) = 4.}
+      {Exemplo de consulta de Ancestral de Nível.}
     \end{figure}
 
 Existem diversas soluções para tal problema, de diferentes níveis de complexidade e
@@ -110,8 +133,8 @@ rapidamente.
 Em \citet{Bender2002TheLA}, \citet{LAInPractice} e \citet{menghani2019simple} são
 discutidas algumas soluções, incluindo as que serão implementadas e testadas neste
 trabalho. Em particular, preferi testar soluções que fossem razoavelmente simples
-de serem implementadas, até mesmo para mostrar que estas são muitas vezes bastante
-suficientes.
+de serem implementadas, até mesmo para mostrar que estas muitas vezes podem ter
+performance melhor do que imagina-se se formos além de uma simples análise de pior caso.
 
 Como motivação para o estudo deste problema, vale lembrar que o Ancestral de Nível
 aparece como parte de problemas mais complexos como árvores ordinais espaço-eficientes
@@ -125,10 +148,11 @@ strings, como dito em \citet{10.1007/3-540-61258-0_11}.
 \section{Implementações}
 
 Todas as implementações assumem a mesma implementação de árvore onde é
-guardada apenas sua raíz e cada nó contém um vetor de ponteiros para seus
+guardada apenas sua raiz e cada nó contém um vetor de ponteiros para seus
 filhos. Para facilitar as implementações, ao construir a árvore é feita uma
 busca em profundidade para preencher vetores que servirão como funções globais
-\texttt{pai()} e \texttt{profundidade()}.
+\texttt{pai()} e \texttt{profundidade()}; nos códigos abaixo, N é o tamanho da
+árvore.
 
 \begin{program}[H]
   \lstinputlisting[
@@ -143,16 +167,14 @@ busca em profundidade para preencher vetores que servirão como funções globai
   \caption{Criação da árvore.\label{prog:tree}}
 \end{program}
 
-Estamos interessados em analisar, para cada algoritmo, tanto sua complexidade de
+Será analisado, para cada algoritmo, tanto sua complexidade de
 tempo de execução quanto a de espaço adicional, também levando em consideração quão
 simples é sua implementação.
-
-Para tornar a discussão da complexidade de tempo mais clara, vamos dizer que se um
-algoritmo tem complexidade de tempo $\langle f(x), g(x) \rangle$, a complexidade de
-seu preprocessamento é $f(x)$ e de suas consultas é $g(x)$.
+Para tornar a discussão da complexidade de tempo mais clara, será dito que
+um algoritmo tem complexidade de tempo $\langle f(x), g(x) \rangle$ se a complexidade de
+seu  preprocessamento é $f(x)$ e a de suas consultas é $g(x)$.
 
 \subsection{Algoritmo Trivial}
-
 O primeiro algoritmo a ser estudado é um em que simplesmente não há
 nenhum preprocessamento e, para cada consulta, apenas subimos pelos pais a
 partir do nó em questão até encontrarmos seu ancestral com profundidade igual
@@ -163,6 +185,87 @@ Para esta implementação, o tempo de execução de seu preprocessamento não de
 tamanho da árvore e também não utiliza nenhuma memória adicional, portanto o
 preprocessamento do Algoritmo Trivial tem complexidade $\bigO(1)$ tanto para tempo
 quanto espaço.
+
+\begin{figure}[h!]
+  \hspace{0cm}
+  \centering
+  \begin{tikzpicture}[scale=0.7,
+    level distance=1.5cm,
+    level 1/.style={sibling distance=5cm},
+    level 2/.style={sibling distance=2.5cm},
+    level 3/.style={sibling distance=1.25cm}]
+    \node (d) [arn_r] {0}
+      child {node (c) [arn_x] {1}
+        child {node (b)[arn_x] {3}
+          child {node (a) [arn_n] {7}}
+          child {node [arn_x] {8}}
+        }
+        child {node [arn_x] {4}
+          child {node [arn_x] {9}}
+          child {node [arn_x] {10}}
+        }
+      }
+      child {node [arn_x] {2}
+        child {node [arn_x] {5}
+          child {node [arn_x] {11}}
+          child {node [arn_x] {12}}
+        }
+        child {node [arn_x] {6}
+          child {node [arn_x] {13}}
+          child {node [arn_x] {14}
+            child [grow=right] {node (q) {$\qquad$} edge from parent[draw=none]
+              child [grow=right] {node (q) {} edge from parent[draw=none]
+                child [grow=up] {node (r) {} edge from parent[draw=none]
+                  child [grow=up] {node (s) {$\boxed{\mathrm{AN}(7,0) = 0}$} edge from parent[draw=none]
+                  }
+                }
+              }
+            }
+          }
+        }
+      };
+      %\draw[very thick, bend left=1000000] (a) -- (b);
+      %\draw[very thick, bend left] (b) -- (c);
+      \path[->] (a) edge [very thick, bend left=80] node [left] {} (b);
+      \path[->] (b) edge [very thick, bend left=60] node [left] {} (c);
+      \path[->] (c) edge [very thick, bend left=80] node [left] {} (d);
+      %\path[->] (a) edge [very thick, bend left=80] node [left] {} (b);
+  \end{tikzpicture}
+  \caption{Exemplo de consulta do Algoritmo Trivial.}
+\end{figure}
+
+\begin{figure}[h!]
+  \hspace{0cm}
+  \centering
+  \begin{tikzpicture}[scale=0.7,
+    level distance=2cm,]
+    \node (h) [arn_r] {0}
+      child [grow=right] {node (g) [arn_x] {1}
+        child [grow=right] {node (f) [arn_x] {2}
+          child [grow=right] {node (e) [arn_x] {3}
+          child [grow=up] {node {\hspace{2cm}$\boxed{\mathrm{AN}(7,0) = 0}$} edge from parent[draw=none]}
+            child [grow=right] {node (d) [arn_x] {4}
+              child [grow=right] {node (c) [arn_x] {5}
+                child [grow=right] {node (b) [arn_x] {6}
+                  child [grow=right] {node (a) [arn_n] {7}}
+                }
+              }
+            }
+          }
+        }
+      };
+      %\draw[very thick, bend left=1000000] (a) -- (b);
+      %\draw[very thick, bend left] (b) -- (c);
+      \path[->] (a) edge [very thick, bend right=50] (b);
+      \path[->] (b) edge [very thick, bend right=40] (c);
+      \path[->] (c) edge [very thick, bend right=50] (d);
+      \path[->] (d) edge [very thick, bend right=50] (e);
+      \path[->] (e) edge [very thick, bend right=50] (f);
+      \path[->] (f) edge [very thick, bend right=50] (g);
+      \path[->] (g) edge [very thick, bend right=50] (h);
+  \end{tikzpicture}
+  \caption{Exemplo de consulta do Algoritmo Trivial.}
+\end{figure}
 
 %\subsection*{Consultas}
 
@@ -185,7 +288,7 @@ profundidade do nó inicial.
 \end{program}
 
 A consulta mais lenta para uma árvore qualquer é uma que parte do nó mais profundo
-e precisa subir até a raíz, levando tempo $\bigO(d)$, onde $d$ é a profundidade
+e precisa subir até a raiz, levando tempo $\bigO(d)$, onde $d$ é a profundidade
 da árvore. No pior caso isso é equivalente a $\bigO(n)$ onde $n$ é a quantidade
 de nós e para uma árvore balanceada cujos nós tem $k$ filhos, é equivalente a
 $\bigO(\log_k n)$, fazendo com que a performance da consulta seja muito dependente da
@@ -201,11 +304,12 @@ Ao contrário do algoritmo trivial, a ideia é precalcular o resultado de todas
 as consultas possíveis durante a fase de preprocessamento para otimizar o
 desempenho da fase de consultas.
 
-Cada nó $u$ tem associado a si $profundidade(u) + 1$ possíveis consultas. Assim, para uma
-árvore com $n$ nós, existem $n + \sum_{i=0}^{n-1} profundidade(i) = \bigO(nd)$ consultas, onde $d$ é a profundidade da árvore.
-O preprocessamento se dá de maneira simples, preenchendo uma tabela de tamanho
-$\bigO(nd)$ com dois laços encadeados, utilizando a função $pai()$ para subir a partir
-de cada nó até a raíz e salvar a resposta para cada profundidade.
+Cada nó $u$ tem associado a si \textit{profundidade(u) + 1} possíveis consultas. Assim,
+para uma árvore com $n$ nós, existem $n + \sum_{i=0}^{n-1}$ \textit{profundidade(i)}
+$= \bigO(nd)$ consultas, onde $d$ é a profundidade da árvore. O preprocessamento se dá
+de maneira simples, preenchendo uma tabela de tamanho $\bigO(nd)$ com dois laços
+encadeados, utilizando a função $pai()$ para subir a partir de cada nó até a raiz e
+salvar a resposta para cada profundidade.
 
 \begin{program}[]
   \lstinputlisting[
@@ -219,6 +323,47 @@ de cada nó até a raíz e salvar a resposta para cada profundidade.
 
   \caption{Preprocessamento do Algoritmo da Tabela.\label{prog:tableproc}}
 \end{program}
+
+
+\begin{minipage}[b]{0.49\textwidth}
+  \centering
+  \begin{tikzpicture}[scale=0.7,
+    level distance=1.5cm,
+    level 1/.style={sibling distance=3cm},
+    level 2/.style={sibling distance=1.6cm}]
+    \node [arn_x] {0}
+      child {node [arn_x] {1}
+        child {node [arn_x] {3}
+        }
+        child {node [arn_x] {4}
+        }
+      }
+      child {node [arn_x] {2}
+        child {node [arn_x] {5}
+        }
+        child {node [arn_x] {6}
+        }
+      };
+  \end{tikzpicture}
+  \captionof{figure}{Árvore exemplo.}
+  \label{fig:a}
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.49\textwidth}
+  \centering
+  \begin{tabular}[b]{c|cccccc}
+    & p = 0 & p = 1 & p = 2 &  &    &                          \\
+  \cline{1-4}
+  0: & 0     &       &       &  & &                             \\
+  1: & 0     & 1     &       &  & &                             \\
+  2: & 0     & 2     &       &  & &                             \\
+  3: & 0     & 1     & 3     &  & & $(i, j) = \mathrm{AN}(i, j)$ \\
+  4: & 0     & 1     & 4     &  & &                            \\
+  5: & 0     & 2     & 5     &  & &                             \\
+  6: & 0     & 2     & 6     &  & &                             \\
+  \end{tabular}
+  \captionof{table}{Tabela de resultados das consultas da árvore da figura~\ref{fig:a}.}
+\end{minipage}
 
 Com a tabela devidamente preenchida, as consultas se tornam tão simples quanto acessar
 a sua entrada correspondente, ou seja, a resposta da consulta que pede pelo ancestral
@@ -248,7 +393,156 @@ uma restrição.
 
 
 \subsection{Algoritmo dos Ponteiros}
-Essa é possivelmente a solução mais complexa que vamos analisar
+Aqui a ideia é subir do nó inicial até a resposta em cada consulta de forma mais
+inteligente; para isso, a cada nó $u$ da árvore é associado um vetor com ponteiros onde o elemento na
+posição $j$ aponta para o $2^j$-ésimo ancestral de $u$. Para preencher estes
+vetores, note que o $2^0$-ésimo ancestral de um nó é seu pai e que
+$2^{j-1} + 2^{j-1} = 2^j$, ou seja, o $2^{j-1}$-ésimo ancestral do $2^{j-1}$-ésimo
+ancestral de um nó é seu $2^j$-ésimo ancestral:
+
+\begin{program}[H]
+  \lstinputlisting[
+    language=pseudocode,
+    style=pseudocode,
+    style=wider,
+    functions={pai},
+    specialidentifiers={global},
+  ]
+  {conteudo-exemplo/jump_preprocess.psc}
+  \caption{Preprocessamento do Algoritmo dos Ponteiros.\label{prog:jumpproc}}
+\end{program}
+
+Uma vez que a tabela de ponteiros está preenchida a consulta se dá, de forma bastante
+elegante, através da representação binária dos números. Para um número de $m$ bits
+$X$, este número pode ser escrito como uma sequência $s_{m-1} s_{m-2} \ldots s_{1} s_{0}$ e
+$\sum_{i=0}^{m-1} s_i \cdot 2^i = X$. Seja $X$ a diferença entre a profundidade do nó
+inicial da consulta e a profundidade da resposta, os pulos necessários são dados
+exatamente pelos bits ligados em $X$.
+
+\textbf{Exemplo:} seja $X = 85 = 01010101_2$ a distância do nó inicial para a resposta,
+pode-se pular $2^6 = 64$ nós, depois $2^4 = 16$, $2^2 = 4$ e finalmente apenas $2^0 = 1$
+para terminar a consulta.
+
+\begin{figure}
+  \hspace{0cm}
+  \centering
+  \begin{tikzpicture}[scale=0.7,
+    level distance=1.5cm,
+    level 1/.style={sibling distance=5cm},
+    level 2/.style={sibling distance=2.5cm},
+    level 3/.style={sibling distance=1.25cm}]
+    \node (c) [arn_r] {0}
+      child {node (b) [arn_x] {1}
+        child {node [arn_x] {3}
+          child {node (a) [arn_n] {7}}
+          child {node [arn_x] {8}}
+        }
+        child {node [arn_x] {4}
+          child {node [arn_x] {9}}
+          child {node [arn_x] {10}}
+        }
+      }
+      child {node [arn_x] {2}
+        child {node [arn_x] {5}
+          child {node [arn_x] {11}}
+          child {node [arn_x] {12}}
+        }
+        child {node [arn_x] {6}
+          child {node [arn_x] {13}}
+          child {node [arn_x] {14}
+            child [grow=right] {node (q) {$\qquad$} edge from parent[draw=none]
+              child [grow=right] {node (q) {} edge from parent[draw=none]
+                child [grow=up] {node (r) {} edge from parent[draw=none]
+                  child [grow=up] {node (s) {$\boxed{\mathrm{AN}(7,0) = 0}$} edge from parent[draw=none]
+                  }
+                }
+              }
+            }
+          }
+        }
+      };
+      %\draw[very thick, bend left=1000000] (a) -- (b);
+      %\draw[very thick, bend left] (b) -- (c);
+      \path[->] (a) edge [very thick, bend left=80] node [left] {$2^1$-ésimo ancestral} (b);
+      \path[->] (b) edge [very thick, bend left=60] node [left] {$2^0$-ésimo ancestral} (c);
+  \end{tikzpicture}
+  \caption[Exemplo de consulta do Algoritmo dos Ponteiros.]
+  {\textbf{Exemplo de consulta do Algoritmo dos Ponteiros.} A diferença de profundidade
+  é 3 = $011_2 = 2^1 + 2^0$.}
+\end{figure}
+
+\begin{figure}
+  \hspace{0cm}
+  \centering
+  \begin{tikzpicture}[scale=0.7,
+    level distance=2cm,]
+    \node (d) [arn_r] {0}
+      child [grow=right] {node (c) [arn_x] {1}
+        child [grow=right] {node [arn_x] {2}
+          child [grow=right] {node (b) [arn_x] {3}
+            child [grow=right] {node [arn_x] {4}
+              child [grow=right] {node [arn_x] {5}
+                child [grow=right] {node [arn_x] {6}
+                  child [grow=right] {node (a) [arn_n] {7}
+                  child [grow=right] {node {$\quad$} edge from parent[draw=none]
+                    child [grow=up] {node {\hspace{2cm}$\boxed{\mathrm{AN}(7,0) = 0}$} edge from parent[draw=none]}
+                  }
+                  }
+                }
+              }
+            }
+          }
+        }
+      };
+      %\draw[very thick, bend left=1000000] (a) -- (b);
+      %\draw[very thick, bend left] (b) -- (c);
+      \path[->] (a) edge [very thick, bend right=50] node [above] {$2^2$-ésimo ancestral} (b);
+      \path[->] (b) edge [very thick, bend left=40] node [below] {$2^1$-ésimo ancestral} (c);
+      \path[->] (c) edge [very thick, bend right=50] node [above] {$2^0$-ésimo ancestral} (d);
+  \end{tikzpicture}
+  \caption[Exemplo de consulta do Algoritmo dos Ponteiros.]
+  {\textbf{Exemplo de consulta do Algoritmo dos Ponteiros.} A diferença de profundidade
+  é 7 = $0111_2 = 2^2 + 2^1 + 2^0$.}
+\end{figure}
+
+\begin{program}[H]
+  \lstinputlisting[
+    language=pseudocode,
+    style=pseudocode,
+    style=wider,
+    functions={profundidade},
+    specialidentifiers={global},
+  ]
+  {conteudo-exemplo/jump_query.psc}
+
+  \caption{Consulta do Algoritmo dos Ponteiros.\label{prog:jumpquery}}
+\end{program}
+
+Como a quantidade de passos da consulta é exatamente o número de bits ligados em $X$,
+são necessários $\bigO(\log d)$ passos, onde $d$ é a profundidade da árvore. Portanto, a
+complexidade do Algoritmo dos Ponteiros é $\langle \bigO(n \log d), \bigO(\log d) \rangle$
+de tempo e $\bigO(n \log d)$ de espaço, que no caso de uma árvore $k$-ária balanceada
+se tornam $\langle\bigO(n \log_k(\log_k n)), \bigO(\log_k(\log_k n)) \rangle$ e
+$\bigO(n \log_k(\log_k n))$, respectivamente.
+
+
+\subsection{Algoritmo da Preordem}
+O último algoritmo faz uso das propriedades da preordem de uma árvore para trazer um
+preprocessamento mais eficiente. Enquanto é feita a travessia da árvore cada nó é associado a
+seu índice na preordem, que é inserido numa lista de nós de sua respectiva profundidade.
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.18]{preordertransformation.pdf}
+  \caption{Associação entre os índices originais e os índices da preordem.}
+  \label{fig:preordertransformation}
+\end{figure}
+
+Para tal, a ideia é guardar a ordem em que os nós de cada nível
+foram visitados durante a travessia em preordem em vetores e então uma consulta se
+resume a procurar o ancestral do nó inicial que está no vetor correspondente à
+profundidade buscada, tendo performance proporcional à quantidade de elementos por
+nível da árvore.
 
 \begin{program}[h!]
   \lstinputlisting[
@@ -257,25 +551,14 @@ Essa é possivelmente a solução mais complexa que vamos analisar
     style=wider,
     functions={dfs, filhos, insere},
     specialidentifiers={global},
-  ]
-  {conteudo-exemplo/jump_preprocess.psc}
+    ]
+    {conteudo-exemplo/preorder_preprocess.psc}
+    
+    \caption{Preprocessamento do Algoritmo da Preordem.\label{prog:preorderproc}}
+  \end{program}
 
-  \caption{Preprocessamento do Algoritmo da Preordem.\label{prog:preorderproc}}
-\end{program}
-
-\subsection{Algoritmo da Preordem}
-O último algoritmo faz uso das propriedades da preordem de uma árvore para trazer uma
-solução mais eficiente. Enquanto é feita a travessia da árvore cada nó é associado à
-seu índice na preordem, que é inserido numa lista de nós de sua respectiva profundidade.
-
-\begin{figure}
-  \centering
-  \includegraphics[scale=0.18]{preordertransformation.pdf}
-  \caption{Associação entre os índices originais e os índices da preordem.}
-\end{figure}
-
-\begin{table}[]
-  \begin{tabular}{llllll}
+\begin{table}[h!]
+  \begin{tabular}{lllllll}
   \cline{3-3}
   profundidade 0: & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{0} &                        &                        &                        \\ \cline{3-3}
                   &                       &                        &                        &                        &                        \\ \cline{3-4}
@@ -284,41 +567,45 @@ seu índice na preordem, que é inserido numa lista de nós de sua respectiva pr
   profundidade 2: & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{2} & \multicolumn{1}{l|}{3} & \multicolumn{1}{l|}{5} & \multicolumn{1}{l|}{6} \\ \cline{3-6} 
   \end{tabular}
   \caption[Vetores contendo os nós processados em cada nível.]
-  {Vetores contendo os nós processados em cada nível. Os índices são referentes à preordem.}
+  {\textbf{Vetores contendo os nós processados em cada nível.} Os índices guardados nos
+  vetores são referentes à preordem e não os da árvore original.}
 \end{table}
 
-Para tal, a ideia é guardar a ordem em que os nós de cada nível
-foram visitados durante a travessia em preordem em vetores e então uma consulta se
-resume a procurar o ancestral do nó inicial que está no vetor correspondente à
-profundidade buscada.
-
-\begin{program}[h!]
-  \lstinputlisting[
-    language=pseudocode,
-    style=pseudocode,
-    style=wider,
-    functions={dfs, filhos, insere},
-    specialidentifiers={global},
-  ]
-  {conteudo-exemplo/preorder_preprocess.psc}
-
-  \caption{Preprocessamento do Algoritmo da Preordem.\label{prog:preorderproc}}
-\end{program}
 
 Para entendermos o funcionamento do algoritmo para as consultas, primeiro precisamos
-nos convencer de que, se um nó $v$ é ancestral de $u$, então $preordem(v) < preordem(u)$,
-onde $preordem(x)$ é o índice associado à posição de $x$ na travessia em preordem, já
-que sempre descobrimos os filhos de um nó depois dele próprio. Além disso, no caso em
-que existam vários nós em determinada profundidade, o ancestral que buscamos é aquele
-cujo índice na preordem é o mais próximo do índice do nó inicial, porém ainda menor
-que tal.
+nos convencer de que, se um nó $v$ é ancestral de $u$, então \textit{preordem(v) $\leq$ preordem(u)},
+onde \textit{preordem(x)} é o índice associado à posição de $x$ na travessia em
+preordem. Isso é verdade já que sempre descobrimos os filhos de um nó depois dele
+próprio, fazendo com que um nó com índice maior que outro não possa ser seu ancestral.
+Além disso, no caso em que existam vários nós em determinada profundidade, o ancestral
+que buscamos é aquele cujo índice na preordem é o mais próximo do índice do nó inicial,
+porém ainda menor que tal. Para realizar esta consulta de forma eficiente e obter
+complexidade logarítmica, pode-se usar a técnica de busca binária para encontrar o
+último elemento de um vetor menor ou igual ao parâmetro passado em $\bigO(\log m)$
+passos, onde $m$ é o tamanho desse vetor, lembrando que a busca deve ser feita com base
+nos índices da preordem e depois esse índice deve ser convertido para a resposta.
+
+% \begin{tikzpicture} [nodes in empty cells,
+%   nodes={minimum width=1.2cm, minimum height=0.5cm},
+%   row sep=-\pgflinewidth, column sep=-\pgflinewidth]
+%   border/.style={draw}
+
+%   \matrix(matrix)[matrix of nodes,
+%       row 1/.style={nodes={draw=none, minimum width=0.3cm}},
+%       nodes={draw}]
+%   {
+%       \tiny{0} & \tiny{1} & \tiny{2} & \tiny{3}\\
+%       $a_{0}$ & $a_{1}$ & $a_{2}$ & $a_{3}$\\
+%       adaa & ada & sada & aad\\
+%   };
+% \end{tikzpicture}
 
 \begin{program}[]
   \lstinputlisting[
     language=pseudocode,
     style=pseudocode,
     style=wider,
-    functions={upper_bound},
+    functions={busca_binaria},
     specialidentifiers={},
   ]
   {conteudo-exemplo/preorder_query.psc}
@@ -326,25 +613,40 @@ que tal.
   \caption{Consulta do Algoritmo da Preordem.\label{prog:preorderquery}}
 \end{program}
 
-\section{Considerações gerais}
-No próximo capítulo estaremos interessados em avaliar a performance de cada algoritmo
+\begin{table}[]
+  \begin{tabular}{ll|l|l|}
+  \cline{3-4}
+  profundidade 1: &  & 1 & {\color{red}4} \\ \cline{3-4} 
+  \end{tabular}
+  \captionof{figure}[Exemplo de consulta do Algoritmo da Preordem.]
+  {\textbf{Exemplo de consulta do Algoritmo da Preordem.} Para uma consulta
+  AN(5, 1) na árvore da figura ~\ref{fig:preordertransformation}, a resposta
+  seria o nó com índice de preordem igual a 4, ou seja,
+  o nó 2.}
+  \end{table}
+
+Finalmente, podemos então concluir que a complexidade de tempo do Algoritmo da Preordem é
+$\langle \bigO(n), \bigO(\log k^d)\rangle$ já que a quantidade de nós por nível de uma
+árvore $k$-ária é $\bigO(k^d)$ e a de espaço $\bigO(n)$.
+
+\section{Resumo das implementações}
+No próximo capítulo estarei interessado em avaliar a performance de cada algoritmo
 para alguns casos de teste, levando em consideração o preprocessamento necessário,
 a realização de consultas e a quantidade de memória utilizada.
 
 Entretanto, analisando as tabelas ~\ref{tab:complexidadetempo},
-~\ref{tab:complexidadeespaco} podemos perceber de imediato que restringir a entrada
+~\ref{tab:complexidadeespaco} pode-se perceber de imediato que restringir a entrada
 para árvores balanceadas permite até mesmo que os algoritmos mais simples apresentem
-complexidades boas, sendo ótimas opções levando em consideração também a dificuldade
-de implementação de cada algoritmo.
+complexidades boas, o que espera-se que seja refletido nos resultados dos testes.
 
 \begin{table}[]
   \begin{tabular}{|c|l|l|l|}
-  \hline
-            & Linear                                       & Binária                                      & k-ária                                       \\ \hline
-  Trivial   & $\langle \bigO(1), \bigO(n) \rangle$                 & $\langle \bigO(1), \bigO(\log_2 n) \rangle$          & $\langle \bigO(1), \bigO(\log_k n) \rangle$          \\ \hline
-  Tabela    & $\langle \bigO(n^2), \bigO(1) \rangle$               & $\langle \bigO(n \log_2 n), \bigO(1) \rangle$        & $\langle \bigO(n \log_k n), \bigO(1) \rangle$        \\ \hline
-  Ponteiros & $\langle \bigO(n \log_2 n), \bigO(\log_2 n) \rangle$ & $\langle \bigO(n \log_2 n), \bigO(\log_2 n) \rangle$ & $\langle \bigO(n \log_2 n), \bigO(\log_2 n) \rangle$ \\ \hline
-  Preordem  & $\langle \bigO(n), \bigO(1) \rangle$                 & $\langle \bigO(n), \bigO(\log_2 n) \rangle$          & $\langle \bigO(n), \bigO(\log_2 n) \rangle$          \\ \hline
+    \hline
+    & Linear                                       & k-ária                                       \\ \hline
+  Trivial   & $\langle \bigO(1), \bigO(n) \rangle$                 & $\langle \bigO(1), \bigO(\log_k n) \rangle$          \\ \hline
+  Tabela    & $\langle \bigO(n^2), \bigO(1) \rangle$               & $\langle \bigO(n \log_k n), \bigO(1) \rangle$        \\ \hline
+  Ponteiros & $\langle \bigO(n \log_2 n), \bigO(\log_2 n) \rangle$ & $\langle \bigO(n \log_k (\log_k n)), \bigO(\log_k (\log_k n)) \rangle$ \\ \hline
+  Preordem  & $\langle \bigO(n), \bigO(1) \rangle$                 & $\langle \bigO(n), \bigO(\log_k n) \rangle$          \\ \hline
   \end{tabular}
   \caption{Comparação da complexidade de tempo dos algoritmos.\label{tab:complexidadetempo}}
   \end{table}
@@ -352,11 +654,11 @@ de implementação de cada algoritmo.
   \begin{table}[]
     \begin{tabular}{|c|l|l|l|}
     \hline
-              & Linear              & Binária             & k-ária              \\ \hline
-    Trivial   & $\bigO(1)$          & $\bigO(1)$              & $\bigO(1)$              \\ \hline
-    Tabela    & $\bigO(n^2)$        & $\bigO(n \log_2 n)$     & $\bigO(n \log_k n)$ \\ \hline
-    Ponteiros & $\bigO(n \log_2 n)$ & $\bigO(n \log_2 n)$ & $\bigO(n \log_2 n)$ \\ \hline
-    Preordem  & $\bigO(n)$          & $\bigO(n)$          & $\bigO(n)$          \\ \hline
+              & Linear              & k-ária              \\ \hline
+    Trivial   & $\bigO(1)$          & $\bigO(1)$              \\ \hline
+    Tabela    & $\bigO(n^2)$        & $\bigO(n \log_k n)$ \\ \hline
+    Ponteiros & $\bigO(n \log_2 n)$ & $\bigO(n \log_k (\log_k n))$ \\ \hline
+    Preordem  & $\bigO(n)$          & $\bigO(n)$          \\ \hline
     \end{tabular}
     \caption{Comparação da complexidade de espaço dos algoritmos.\label{tab:complexidadeespaco}}
     \end{table}
