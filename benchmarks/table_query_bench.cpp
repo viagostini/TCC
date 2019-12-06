@@ -24,6 +24,8 @@ int main (int args, char* argv[]) {
         path.append("binary/query_binary_");
     else if (k == 4)
         path.append("4ary/query_4ary_");
+    else if (k == 8)
+        path.append("8ary/query_8ary_");
 
     path.append(argv[1]);
 

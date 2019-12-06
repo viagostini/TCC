@@ -25,15 +25,17 @@ pair<int,int> random_query() {
 int main (int args, char* argv[]) {
     n = atoi(argv[1]);
     k = atoi(argv[2]);
-    int m = 10000000;
+    int m = 1000000;
     
     string path = "input/";
     if (k == 1) 
-        path.append("linear/query_linear_");
+        path.append("linear/query_linear_smaller_");
     else if (k == 2)
         path.append("binary/query_binary_");
     else if (k == 4)
         path.append("4ary/query_4ary_");
+    else if (k == 8)
+        path.append("8ary/query_8ary_");
 
     path.append(argv[1]);
 

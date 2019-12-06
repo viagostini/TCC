@@ -11,9 +11,11 @@ elif [ $K = 2 ]; then
     TREE="binary"
 elif [ $K = 4 ]; then
     TREE="4ary"
+elif [ $K = 8 ]; then
+    TREE="8ary"
 fi
 
-for n in ${M[@]}
+for n in ${N[@]}
 do
     echo $n
     FILE="input/${TREE}/query_${TREE}_${n}"
